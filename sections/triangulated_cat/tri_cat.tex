@@ -1,0 +1,233 @@
+% !TEX root = ../../homo_alg.tex
+
+\newpage
+\section{Triangulated Categories}
+
+\subsection{Distinguished Triangles}
+
+We now formalize the property that we saw for $\cK(A)$ and $\cD(A)$. Let $\tau$ be an additive category. Fix an additive automorphism $T: \tau \to \tau$, called the translate, translation, shift, or suspension of $\tau$. We write $X[1]=T(X)$ and $X[n]=T^n(X)$ for $n \in \Z$. A triangle is a triple of morphisms $(u,v,w)$ or $X \ma{u} Y \ma{v} Z \ma{w} \ma X[1]$ and a morphism of triangles is a commutative diagram
+\[
+\begin{tikzcd}
+X \arrow{r} \arrow{d}{f} & Y \arrow{r} \arrow{d}{g} & Z \arrow{r} \arrow{d}{h} & X[1] \arrow{d}{f[1]} \\
+X' \arrow{r} & Y' \arrow{r} & Z' \arrow{r} & X'[1]
+\end{tikzcd}
+\]
+\begin{dfn}[Triangulated Category]
+A triangulated category is an additive category $\tau$ with 
+\begin{itemize}
+\item translation
+\item a collection of ``distinguished" triangles
+\end{itemize}
+such that 
+\begin{enumerate}[(i)]
+\item TR1a: $X \ma{1} X \ma{} 0 \ma{} X[1]$ is a distinguished triangle. 
+\item TR1b: Any triangle which is isomorphic to a distinguished triangle is distinguished. 
+\item TR1c: Any morphism $X \ma{u} Y$ can be completed to a distinguished triangle $(u,v,w)$, not necessarily uniquely. [However, the axioms for a triangulated category force this triangle to be unique.]
+\item TR2: If $(u,v,w)$ is a distinguished triangle then its rotates $(v,w,-u[1])$ and $(-w[-1],u,v)$ are distinguished triangles.
+\item TR3 (Completion of Morphisms): Given distinguished triangles given below and morphisms $f,g$
+\[
+\begin{tikzcd}
+X \arrow{r} \arrow{d}{f} & Y \arrow{r} \arrow{d}{g} & Z \arrow{r} \arrow[dotted]{d}{h} & X[1] \arrow{d}{f[1]} \\
+X' \arrow{r} & Y' \arrow{r} & Z' \arrow{r} & X'[1]
+\end{tikzcd}
+\]
+such that the squares commute, there is a map $h: Z \to Z'$ completing the diagram to a map of triangles. Note that $h$ is not necessarily unique. 
+\item TR4 (Octahedral Axiom): Given morphisms $A \ma{u} B$, $B \ma{v} C$, and distinguished triangles $A \ma{u} B \ma{j} C' \ma{\beta} A[1]$, $B \ma{v} C \ma{x} A' \ma{i} B[1]$, and $A \ma{vu} C \ma{y} B' \ma{\gamma} A[1]$, there is a distinguished triangle $(f,g,j[1] \circ i)$: $C' \ma{f} B' \ma{g} A' \ma{j[1] \circ i} C'[1]$ such that the following diagram commutes
+\[
+\begin{tikzcd}
+C' \arrow[bend right=50,swap]{ddrr}{\exists f} \arrow[swap]{dr}{\beta} & & B \arrow[swap]{ll}{j} \arrow{dr}{v} & & A' \arrow[swap]{ll}{i} \arrow[bend right=40,swap]{llll}{j[1]i} \\
+ & A \arrow{ur}{u} \arrow{rr}{vu} &  & C \arrow[swap]{ur}{x} \arrow{dl}{y} &  \\
+ & & B' \arrow{ul}{\gamma} \arrow[bend right=50,swap]{rruu}{\exists g} & &  \\
+\end{tikzcd}
+\]
+\end{enumerate}
+\end{dfn}
+
+\begin{rem}
+Note that TR4 is often called the Octahedral Axiom as the commutative diagram is often given as
+\[
+\begin{tikzcd}
+ \phantom{x} & B' \arrow[dotted]{dr}{g} \arrow[crossing over]{ddl}{\gamma} & \\
+ C' \arrow{d}{\beta} \arrow[dotted]{ur}{f} & & A' \arrow{ll}{j[1]i} \arrow{ddl}{i} \\
+ A\arrow{dr}{u} \arrow[crossing over]{rr}{vu} & & C \arrow{u}{x} \arrow[crossing over]{uul}{y} \\
+ & B' \arrow{uul}{j} \arrow{ur}{v} & \\
+\end{tikzcd}
+\]
+\end{rem}
+
+The following proposition will show that the extension in TR1c is unique up to isomorphism and that in TR4, the octahedral maps $f,g$ are unique up to isomorphism of triangles. 
+
+\begin{prop}
+A distinguished triangle is determined up to isomorphism by any one of its maps. 
+\end{prop}
+
+Proof: This follows almost immediately from TR2 and TR3. \qed \\
+
+\begin{prop}
+In TR3, if $f,g$ are isomorphisms in $\tau$, then $h$ is an isomorphism in $\tau$.
+\end{prop}
+
+Proof: This follows similarly to the previous proof but makes use of the 5 Lemma for Triangles. \qed \\
+
+\subsection{Cohomological Functors}
+
+\begin{dfn}[Cohomological Functor]
+An additive functor $H: \tau \to \cA$ from a triangulated triangle $\tau$ to an abelian category $\cA$ is called a cohomological functor if for any distinguished triangle $X \ma{u} Y \ma{v} Z \ma{w} X[1]$ the sequence $F(X) \ma{H(u)} F(Y) \ma{H(v)} F(Z) \ma{H(w)} F(X[1])$ is exact. 
+\end{dfn}
+
+\begin{ex}
+There are two main examples of cohomological functors:
+\begin{enumerate}[(i)]
+\item The $0^\text{th}$ homology
+\[
+\begin{split}
+H^0:& \cK(\cA) \to \cA \\
+H^0:& \cD(\cA) \to \cA 
+\end{split}
+\]
+where $X^0 \mapsto H^0(X^0)$. Note that $H^0(W[i])=H^i(W)$ for any complex $W$ in $\cK(\cA)$ and $\cD(\cA)$. 
+\item In any triangulated category $\tau$, $\Hom_\tau(U,-)$ is a cohomological functor. 
+\end{enumerate}
+\end{ex}
+
+\begin{lem}
+Let $\tau$ be a triangulated category. Fix an object $U$ on $\tau$ then $\Hom_\tau(U,-)$ is a cohomological functor from the triangulated category $\tau$ to an abelian category. Similarly, $\Hom_\tau(-,U)$ is a functor from $\tau$ to an abelian category. 
+\end{lem}
+
+Proof: Consider $\Hom_\tau(U,0)$ -- the other direction is similar. It is enough to show that for any distinguished triangle $X \ma{u} Y \ma{v} Z \ma{w} X[1]$ that the sequence
+\[
+\Hom(U,X) \ma{u_*} \Hom(U,Y) \ma{v_*} \Hom(U,Z)
+\]
+is exact at $\Hom(U,Y)$ as the exactness for the rest of the sequence is obtained by translation, rotation, or shift by TR2. It is a simple exercise to see that $vu=0$ for any distinguished triangle. Applying $\Hom(U,-)$, we obtain $v_*u_*=0_*=0$ so $\im u_* \subset \ker v_*$. Conversely, let $f \in \ker v_*$ so that $v_*(f)=vf=0$. By TR1, we know that $U \ma{1} U \ma{} 0 \ma{} U[1]$ is a distinguished triangle. There is then a commutative diagram 
+\[
+\begin{tikzcd}
+U \arrow{r}{1} \arrow[dotted]{d} & U \arrow{r}{0} \arrow{d}{f} & 0 \arrow{d} \arrow{r} & U[1] \\
+X \arrow{r}{u} & Y \arrow{r}{v} & Z \arrow{r}{w} & X[1]
+\end{tikzcd}
+\]
+Rotate, lift, rotate, to get a map of distinguished triangles, that is to obtain a map $U \ma{h} X$ such that $uh=f$. But $uh=u_*(h)$ so that $f \in \im u_*$. But then the sequence is exact. 
+
+We now prove a previous proposition.
+
+\begin{prop}
+In TR3, if $f,g$ are isomorphisms in $\tau$, then $h$ is an isomorphism in $\tau$.
+\end{prop}
+
+Proof: Given the diagram in TR3
+\[
+\begin{tikzcd}
+X \arrow{r} \arrow{d}{f} & Y \arrow{r} \arrow{d}{g} & Z \arrow{r} \arrow{d}{h} & X[1] \arrow{d}{f[1]} \\
+X' \arrow{r} & Y' \arrow{r} & Z' \arrow{r} & X'[1]
+\end{tikzcd}
+\]
+with $f,g$ isomorphisms, apply $\Hom_\tau(Z',-)$ (a cohomological functor) to get a commutative diagram with exact rows (by the previous lemma)
+\[
+\begin{tikzcd}
+\Hom_\tau(Z',X) \arrow{r} \arrow{d}{f} & \Hom_\tau(Z',Y) \arrow{r} \arrow{d}{g} & \Hom_\tau(Z',Z) \arrow{r} \arrow{d}{h} & \Hom_\tau(Z',X[1]) \arrow{d}{f[1]} \\
+\Hom_\tau(Z',X') \arrow{r} & \Hom_\tau(Z',Y') \arrow{r} & \Hom_\tau(Z',Z') \arrow{r} & \Hom_\tau(Z',X'[1])
+\end{tikzcd}
+\]
+As $f,g$ are isomorphisms and the fact that translation is an automorphism, we know that $f[1]$ and $g[1]$ are isomorphisms. So $f_*,g_*,f[1]_*,$ and $g[1]_*$ are isomorphisms. Then by the 5 Lemma, we know that $h_*$ is an isomorphism. \qed \\
+
+\subsection{The Cone in Triangulated Categories}
+
+If $\tau$ is a triangulated category then we know that any morphism $X \ma{u} Y$ extends -- uniquely up to isomorphism -- to a distinguished triangle $X \ma{u} Y \ma{v} Z \ma{w} X[1]$. Then $Z$ with maps $v,w$ is called the cone of $u$, written $C(u)$. Note that in $\cD(\cA)$ and $\cK(\cA)$, $C(u)$ is actually the mapping cone of $u$.
+
+\begin{thm}
+Let $\cA$ be an abelian category. The category $\cK(\cA)$ with translation being shift [1] of complexes and distinguished triangles being those isomorphic (up to homotopy) to a triangle of the form $X \ma{u} Y \ma{} C(u) \ma{} X[1]$ is a triangulated category. Likewise, $\cK^+(\cA), \cK^-(\cA)$, and $\cK^b(\cA)$ are also triangulated categories. 
+\end{thm}
+
+Proof: We show this for $\cK(\cA)$ only. We need verify the axioms.
+\begin{enumerate}[1]
+\item The last parts of TR1 follow from the definitions and from the fact that $X \ma{u} Y \ma{} C(u) \ma{} X[1]$ is distinguished. The first part of TR1 follows from the fact that 
+\[
+\begin{tikzcd}
+X \arrow{r}{1} \arrow{d}{1} & X \arrow{d}{1} \arrow{r} & 0 \arrow{r} \arrow{d} & X[1] \arrow{d}{1} \\
+X \arrow{r}{1} & X \arrow{r} & C(1) \arrow{r} & X[1]
+\end{tikzcd}
+\]
+One need check that the diagram commutes that that it is an isomorphism of triangles. The only real work in this step is in checking that $0 \to C(1)$ is homotopic to the identity of $C(1)=X[1] \oplus X$. The homotopy is
+\[
+1_{C(1)}= hd+dh, \text{ where, }h= \begin{pmatrix} 0 & 0 \\ 1_X & 0 \end{pmatrix}
+\]
+\item Let $X \ma{u} Y \ma{v} Z \ma{w} X[1]$ be a distinguished triangle. We need show that $Y \ma{v} Z \ma{w} X[1] \ma{-u[1]} Y[1]$ is a distinguished triangle (the converse can be proved by repeated translations). To see that the second triangle is distinguished, we give an isomorphism between it and the distinguished triangle $Y \ma{v} Z \ma{s} C(v) \ma{t} Y[1]$. As the triangle $X \ma{u} Y \ma{v} Z \ma{w} X[1]$ is distinguished, we can assume that $Z=C(v)=X[1] \oplus Y$, or else compose with the natural isomorphisms. Note that
+\[
+d_{C(v)}= \begin{pmatrix} -d_Y & 0 & 1_Y \\ 0 & -d_X & u[1] \\ 0 & 0 & d_Y \end{pmatrix}
+\]
+Define $\theta: X[1] \to C(v)$ by $\theta^i(x^{i+1})=(-u^{i+1}x^{i+1}, x^{i+1},0)$ for $x^{i+1} \in X[1]^i=X^{i+1}$. We have the diagram
+\[
+\begin{tikzcd}
+Y \arrow{r}{v} \arrow{d}{1} & Z \arrow{d}{1} \arrow{r}{w} & X[1] \arrow{r}{-u[1]} \arrow{d}{0} & Y[1] \arrow{d}{1} \\
+Y \arrow{r} & Z \arrow{r}{s} & C(v) \arrow{r}{t} & Y[1]
+\end{tikzcd}
+\]
+We want to show that this diagram is a morphism of triangles in $\cK(\cA)$. It is easy to check this using the explicit formulas for $s,\theta w$ and that $h^i: Z^i \to C(v)^{i-1}$ given by $h^i(x^{i+1},y^i)=(y^i,0,0)$ is the necessary homotopy. One need also verify that this is an isomorphism of triangles but this was done earlier in a previous proof. 
+
+\item To see TR3, given distinguished triangles $X \ma{u} Y \ma{} C(u) \ma{} X[1]$ and $X' \ma{u'} Y' \ma{} C(u') \ma{} X'[1]$ and maps $f: X \to X'$ and $g: Y \to Y'$, there is a map $h: C(u) \to C(u')$ given by $h\defeq g \oplus f[1]$. It is simple to check that $h$ is indeed a chain map. 
+
+\item To see TR4, consider maps $A \ma{u} B$ and $B \ma{v} C$. We may assume that the distinguished triangles extending $u,v,$ and $vu$ are the standard ones with the cone in them. Otherwise, compose the result with the appropriate isomorphisms. Then we have
+\[
+\begin{tikzcd}
+C(vu) \arrow{dr} \arrow[dotted,bend left=50]{rrrr}{g} & & C \arrow{ll} \arrow{rr} & & C(v) \arrow{dl} \arrow[bend left=50]{ddll}{(j[1] \circ i)[1]} \\
+& A \arrow[swap]{rr}{u} \arrow{ur}{vu} & & B  \arrow{dl} \arrow[swap]{ul}{v} & \\
+& & C(u) \arrow[dotted,bend left=50]{uull}{f} \arrow{ul} & & 
+\end{tikzcd}
+\]
+We want to show that there exists $f,g$ so the outside ``loop" is a distinguished triangle. Define $f(b,a) \defeq (v(b),a)$ and $g(c,a) \defeq (c,u(a))$. One need check that $f,g$ are chain maps (maps of complexes): $fd=df$ and $gd=dg$ for differential $d$ and that the two new regions in the diagram commute: $\beta=\gamma f$ and $x=gy$ using the previous notation. 
+
+Now to see that $C(u) \ma{f} C(vu) \ma{g} C(v) \ma{j[1]i} C(u)[1]$ is a distinguished triangle, note that $C(v)^n=C^n \oplus B^{n-1}$ and $C(f)=(C^n \oplus A^{n+1}) \oplus (B^{n-1} \oplus A^n$ and simply check that these ``work". Now if $\varphi$ is a homotopy equivalence, we have $\varphi: C(v) \to C(u(f))$ and $\psi: C(u(f)) \to C(v)$ where $\varphi(c,b)=(c,0,b,0)$ and $\psi(c,a,b,d)=(c,b)$. Check that $\varphi \psi \simeq 1$ and $\psi \varphi \simeq 1_{C(v)}$ and that $C(u) \ma{f} C(vu) \ma{g} C(v) \ma{j[1]i} C(u)[1]$ is the same as $C(u) \ma{f} C(vu) \ma{\varphi g} C(f) \ma{(j[1]i)\psi} C(u)[1]$ by showing the appropriate diagram commutes. To see that this last triangle is distinguished, one need check that $\varphi g$ is the normal inclusion and $(j[1]i)\psi$ is the usual projection (or homotopic to them). 
+\end{enumerate}
+\qed \\
+
+
+
+
+\begin{thm}
+Let $\tau$ be a triangulated category, e.g. $\cK(\cA)$, and $S$ a localizing class of morphisms. Suppose $S$ is compatible with the triangulation. That is, 
+\begin{enumerate}[(a)]
+\item $s \in S$ if and only if $T(s)=s[1] \in S$
+\item In TR3, if $f,g \in S$ then $h$ can be chosen to be in $S$ as well 
+\end{enumerate}
+Then $S^{-1}\tau$ with data
+\begin{enumerate}[(i)]
+\item translation as before (for $\tau$) as $\text{obj }\tau=\text{obj }S^{-1}\tau$
+\item distinguished triangles being those isomorphic to image of a distinguished triangle from $\tau$ under the functor $\tau \to S^{-1} \tau$ given by $x \mapsto x$ and $f \mapsto (1,f)$
+\end{enumerate}
+Then $S^{-1}\tau$ is a triangulated category. 
+\end{thm}
+
+Proof: The proof of this uses very careful tracking of roofs, see [GM] pp 251 - 256. \qed \\
+
+\begin{cor}
+The category $\cD(\cA), \cD^+(\cA), \cD^-(\cA),$ and $\cD^b(\cA)$ are triangulated. 
+\end{cor}
+
+Proof: Using the theorem, one only need check (a) and (b). But (a) is obvious and to see (b), let $S$ be the set of quasi isomorphisms. One cannot use the Triangulated Five Lemma as we do not know that $\cD(\cA)$ is triangulated. Instead, use the long exact sequence on homology from the two distinguished triangles. \qed \\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,516 @@
+% !TEX root = ../../homo_alg.tex
+\newpage
+\section{Categories} 
+\subsection{Categories and Morphisms}
+
+We begin with a review of the Category Theory from MAT 731. Our goal is to generalize the world of modules to an arbitrary world with the same features. 
+
+\begin{dfn}[Category]
+A category $\cC$ consists of a class of objects, a set of morphisms, and a composition for these morphisms. The objects of $\cC$ are denoted obj $\cC$ and need not even be a set. This collection of objects is called small if the collections is a set. The morphisms are maps between objects. If $A,B$ are objects, then we write $\Hom_{\cC}(A,B)$ for the set of morphisms $f: A \rightarrow B$ (more often written $A \ma{f} B$). The collection of morphisms $\Hom_{\cC}(A,B)$ has the following properties:
+	\begin{enumerate}[(i)]
+	\item There is an identity morphism, denoted $1_A$ or $\id_A$, such that $1_A: A \rightarrow A$ for all $A \in \text{obj } \cC$. 
+	\item There is a composition operation
+		\[
+		\Hom_{\cC}(A,B) \times \Hom_{\cC}(B,C) \la \Hom_{\cC}(A,C)
+		\]
+written $g \circ f$ - or $gf$, when no confusion, will arise---so that $(f,g) \mapsto gf$. 
+	\end{enumerate}
+This is the composition for the category $\cC$ and it must satisfy the following properties:
+	\begin{enumerate}[(i)]
+	\item Associativity: For all morphisms $A \ma{f} B \ma{g} C \ma{h} D$, we have $(hg)f=h(gf)$.
+	\item Unit: For each object $A$, there is an identity morphism $1_A \in \Hom_{\cC}(A,A)$ such that $f 1_A=f$ and $1_Bf=f$ for all $A \ma{f} B$. 
+	\end{enumerate}
+\end{dfn}
+
+
+\begin{rem}
+Note that one will often write $A \in \cC$ when what one really means is $A \in \text{obj } \cC$. This is not entirely unreasonable given there is a one-to-one correspondence between objects $A$ and their identity morphism $1_A$ so that a category could be considered to be a class of maps alone. 
+\end{rem}
+
+
+\begin{ex} \hfill
+	\begin{enumerate}[(i)]
+	\item \textbf{Sets}: The objects are sets, the morphisms are functions, and the composition is ordinary function composition.
+	\item \textbf{Ab}: The objects are abelian groups, the morphisms are group homomorphisms, and the composition is ordinary function composition.
+	\item $\textbf{Vec}_{k}$: The objects are [finite dimensional] vector spaces over $k$, the morphisms are linear transformations, and the composition is ordinary function composition.
+	\item \textbf{Groups}: The objects are groups, the morphisms here are homomorphisms, and the composition is ordinary function composition. 
+	\item \textbf{Ring}: The objects are rings, the morphisms here are ring homomorphisms, and the composition is ordinary function composition. 
+	\item \textbf{Top}: The objects are topological spaces, the morphisms are continuous maps, and the composition is ordinary function composition. 
+	\item \textbf{Mfd}: The objects are smooth manifolds, the morphisms are smooth maps, and the composition is ordinary function composition. 
+	\item \textbf{R-mod}: The objects are [left] $R$-modules, the morphisms are $R$-module homomorphisms, and the composition is ordinary function composition. Here, $R$ is some fixed ring. 
+	\end{enumerate} \xqed
+\end{ex}
+
+
+Though in the preceding example above the objects and morphisms are sets, these need not always be the case as the next example shows. 
+
+
+\begin{ex}
+Consider a partially ordered set (poset) $P$ and form a category by making the objects the set of points, or elements, of $P$ and the morphisms be defined by the following rule: if $p \leq q$ then there is a morphism called $p \leq q$, also denoted $p \rightarrow q$. That is, if $p \leq q$, then $\Hom_{\cC}(p,q)=\{p \rightarrow q\}$. If $p \not\leq q$, then $\Hom_{\cC}(p,q)=\emptyset$. Moreover, $\Hom_{\cC}(p,p)=\{p \rightarrow p\}$. We can visualize this in a diagram. [Note there are technically arrows missing in this diagram, as the comments below will explain.]
+	\[
+	\begin{tikzcd}
+	d &  &  &  \\ 
+	& e \arrow{ul} &  & f \\ 
+	b \arrow{ur} &  & c \arrow{ul} \arrow{ur} &  \\ 
+ 	& a \arrow{ur} \arrow{ul} &  &  \\ 
+	\end{tikzcd}
+	\] 
+For example as $a \leq b$, there is a morphism from $a$ to $b$. However as $e \not\leq f$, there is no morphism from $e$ to $f$. The identity morphism exists as $a \leq a$. Note at each node there is really an arrow going to itself; however, we recognize that this arrow is there and do not write it so as to not clutter the diagram. Similarly, there should be an arrow from $a$ to $e$ in the diagram as there is an arrow from $a$ to $b$ and $b$ to $e$. We instead recognize this fact from the ability to `travel' from $a$ to $e$ via traveling between the nodes in the directions allowed by the direction of the arrows. \xqed
+\end{ex}
+
+
+\begin{dfn}[Subcategory]
+A subcategory $\cB$ of a category $\cC$ is a collection of some of the objects of $\cC$ and some of the morphisms such that $\cB$ is category. That is, we need $1_B$ to be in the category $\cB$ for all objects $B \in \cB$ and we need the morphisms to be closed under composition. The subcategory $\cB$ is called full if it contains all possible morphisms between the objects of $\cB$. That is for all $B,B' \in \cB$, we have $\Hom_{\cB}(B,B')=\Hom_{\cC}(B,B')$. 
+\end{dfn}
+
+\begin{ex} \hfill
+	\begin{enumerate}[(i)]
+	\item \textbf{Ab} $\subseteq$ \textbf{Groups}: That is, the category of abelian groups is a subcategory of the category of groups.
+	\item \textbf{Haus} $\subseteq$ \textbf{Top}: That is, the category of Hausdorff topological spaces is a subcategory of the category of groups. 
+	\item Let $\cC$ be the following category:
+		\[
+		\begin{tikzcd}
+		d &  &  &  \\ 
+		& e \arrow{ul} &  & f \\ 
+		b \arrow{ur} &  & c \arrow{ul} \arrow{ur} &  \\ 
+ 		& a \arrow{ur} \arrow{ul} &  &  \\ 
+		\end{tikzcd}
+		\] 
+	Then the following category is a subcategory of $\cC$
+		\[
+		\begin{tikzcd}
+		b &  & c  \\ 
+	 	& a \arrow{ul} 
+		\end{tikzcd}
+		\] 
+	Notice that this is an example of a subcategory which is not a full subcategory. 
+	\end{enumerate} \xqed 
+\end{ex}
+
+
+The properties of morphisms generalize the properties of $R$-module homomorphisms. However, not all the properties of $R$-module homomorphisms hold for any category and instead need to be appropriately generalized. In this spirit, we will generalize the notions of kernels and cokernels to an arbitrary category. 
+
+
+\begin{dfn}[Monic]
+Let $B \ma{f} C$ be a morphism in a category $\cC$. We say that $f$ is monic (or a monomorphism), if $f$ can be canceled from the left; that is, for all objects $A$ and morphisms $g,h: A \to B$, we have that $fg=fh$ implies $g=h$. Equivalently, if $g \neq h$, then $fg \neq fh$. 
+	\[
+	\begin{tikzcd}
+	A \arrow[yshift=0.75ex]{r}{g} \arrow[yshift= -0.75ex,swap]{r}{h} & B \arrow{r}{f} & C
+	\end{tikzcd}
+	\]
+\end{dfn}
+
+
+\begin{dfn}[Epi]
+Let $B \ma{f} C$ be a morphism. We say that $f$ is epi (or epic/epimorphism) if $f$ can be cancelled from the right; that is, for all objects $D$ and all morphisms $g,h: C \to D$, we have $gf=hf$ implies $g=h$. Equivalently, if $g \neq h$, then $gf \neq hf$. 
+	\[
+	\begin{tikzcd}
+	B \arrow{r}{f} & C \arrow[yshift=0.75ex]{r}{g} \arrow[yshift= -0.75ex,swap]{r}{h} & D
+	\end{tikzcd}
+	\]
+\end{dfn}
+
+
+\begin{dfn}[Isomorphism]
+Given a morphism $B \ma{f} C$, we say that $f$ is an isomorphism if it has an inverse. That is, there exists a morphism $C \ma{g} B$ such that $gf=1_B$ and $fg=1_C$. This morphism $g$ is denoted $f^{-1}$. 
+\end{dfn}
+
+
+In the case where the category is \textbf{Rmod}, then monic morphisms are the same as injective $R$-maps, epi morphisms are the same as surjective $R$-maps, and isomorphisms are the usual isomorphisms. Moreover in this case, an $R$-map is both epi and monic if and only if it is injective. However, this is not true in a general category. 
+
+
+\begin{ex}
+	\begin{center}
+	\begin{tabular}{cc} \hline
+	Category & Isomorphisms \\ \hline \hline 
+	\textbf{Sets} & Bijection \\
+	\textbf{R-mod} & $R$-module Isomorphism \\
+	\textbf{Top} & Homeomorphism \\
+	\textbf{Mfd} & Diffeomorphism 
+	\end{tabular}
+	\end{center} \xqed
+\end{ex}
+
+
+
+\subsection{Kernels \& Cokernels}
+
+
+
+In the traditional case of $R$-modules, one can define the kernel of a map $f: M \to N$ via $\ker f:= \{ m \in M \colon f(m)=0\}$. The elements 0 here is a specially defined element of the category object $N$. However for a general category, objects may not have `traditional elements.' So we will also need to generalize this notion to categories in terms of objects alone.
+
+
+\begin{dfn}[Initial Object]
+An object $I$ in a category $\cC$ is called an initial object if for all objects $C$ in $\cC$, there is a unique morphism $I \to C$.
+\end{dfn}
+
+
+\begin{dfn}[Terminal Object]
+An object $T$ in a category $\cC$ is called a terminal object if for all objects $C \in \cC$, there is a unique morphism $C \to T$.
+\end{dfn}
+
+
+\begin{ex}[Initial Object] \hfill
+	\begin{enumerate}[(i)]
+	\item The emptiest is an initial object in \textbf{Sets}.
+	\item The zero module is an initial object in \textbf{R-mod}. 
+	\item 0 is the initial object of the natural numbers $\N$, when viewed as a poset. 
+	\end{enumerate} \xqed 
+\end{ex}
+
+
+\begin{ex}[Terminal Object] \hfill
+	\begin{enumerate}[(i)]
+	\item Every one-point set is a terminal object in \textbf{Sets}. Note that the empty set is not a terminal object in \textbf{Sets} as $\Hom_{\textbf{Sets}}(X,\emptyset)=\emptyset$ for every nonempty set $X$.
+	\item The zero module is a terminal object in \textbf{R-mod}.
+	\item Viewed as a poset, $\N$ has no terminal object. 
+	\end{enumerate} \xqed
+\end{ex}
+
+
+\noindent Note that even having defined an initial and terminal object for categories, as the preceding example shows, a category need not have either. Now having defined both an initial and terminal object, we can generalize the notion of 0 for $R$-modules to categories. 
+
+
+\begin{dfn}[Zero Object]
+In a category $\cC$, a zero object is an object that is both an initial and a terminal object, often written as 0. These are also referred to as null objects. 
+\end{dfn}
+
+
+\begin{ex} \hfill
+	\begin{enumerate}[(i)]
+	\item In \textbf{Grp}, the trivial group, $\{1_G\}$, is the zero object. 
+	\item In the category of pointed sets (sets with a distinguished element), any one-element set is a zero object. 
+	\item In \textbf{R-mod}, the zero module is a zero object. 
+	\item In \textbf{Sets}, $\emptyset$ is initial. Singleton sets in \textbf{Sets} are terminal. Therefore, \textbf{Sets} have no zero object and hence have no zero map. 
+	\item In \textbf{Rng} (rings without a unit), the trivial ring, $\{0\}$, is the zero object. In \textbf{Ring}, the zero ring is not a zero object since rings are required to have units (and ring homomorphisms preserve them). 
+	\end{enumerate} \xqed
+\end{ex}
+
+
+Note that a category has a zero object precisely when it has an initial and terminal object. Finally, it is routine to verify that initial objects, terminal objects, and zero objects, when they exist, are unique up to isomorphism. As a final remark, we not that monic and epic maps do replicate the normal definition of injective and surjective maps in the case of \textbf{Sets} and \textbf{R-mod}.
+
+
+\begin{ex}
+If $\cC$ is a subcategory of \textbf{Sets}, then any injective map is monic: if $f: A \to B$ is injective and $g \neq h$, where $g,h: C \to A$, then choose $c \in C$ such that $g(c) \neq h(c)$, we have $fg(c)\neq fh(c)$ so that $fg \neq fh$. Similarly, if $f$ is surjective then it is epic: if $f$ is surjective and $g \neq h$, where $g,h: B \to C$, then choosing $g(b) \neq h(b)$, writing $b=f(a)$, then $gf(a) \neq hf(a)$. \xqed
+\end{ex}
+
+
+\begin{prop}
+In the category \textbf{R-mod}, all monics are injective and all epics are surjective.
+\end{prop}
+
+\pf Suppose $f: M \to N$ is an $R$-map. If $f$ is monic, we need show that $\ker f=0$. Define $g,h: \ker f \to M$ via defining $g=0$ and $h$ to be the canonical injection. Then $fg=fh=0$ so that $g=h=0$; that is, $\ker f=0$. 
+
+If $f$ is epic, define $g,h: N \to N/f(M)$ by taking $g=0$ and $h$ to be the natural projection map. Then $gf=hf=0$. But then $g=h=0$ so that $N/f(M)=0$. \qed \\
+
+
+One may think that monic and epic morphisms are sufficient to define kernels and cokernels. However despite the preceding remarks, these are generalized notions, appropriate for arbitrary categories, but they do not reproduce kernels and cokernels even in the case where $\cC$ is \textbf{R-mods}. As defined, monic and epi maps are not the correct `size.' We need to restrict the definition further. 
+
+
+\begin{dfn}[Kernel]
+If $f: A \to B$ is a morphism in a category $\cC$, then its kernel, denoted $\ker f$, is a morphism $\iota: K \to A$ satisfying the following universal property: $f\iota=0$ and for every $g: X \to A$ with $fg=0$, there exists a unique map $\theta: X \to K$ with $\iota\theta=g$.
+	\[
+	\begin{tikzcd}
+	X \arrow[dotted,swap]{d}{\theta} \arrow[swap]{dr}{g} \arrow{drr}{0} & & \\
+	K \arrow[swap]{r}{\iota} & A \arrow[swap]{r}{f} & B 
+	\end{tikzcd}
+	\]
+\end{dfn}
+
+
+\noindent In the definition above, the first requirement essentially is for existence while the second condition forces the $\ker f$ to be the `largest' such object. 
+
+
+\begin{dfn}[Cokernel]
+If $f: A \to B$ is a morphism in an category $\cC$, then its cokernel, denoted $\coker f$, is a morphism $\pi: B \to C$ that satisfies the following universal property: $\pi f=0$ and for all morphisms $h: B \to Y$ with $hf=0$, there exists a unique map $\theta: C \to Y$ with $\theta\pi=h$.
+	\[
+	\begin{tikzcd}
+	A \arrow{r}{f} \arrow[swap]{rrd}{0} & B \arrow{r}{\pi} \arrow{dr}{h} & C \arrow[dotted]{d}{\theta} \\ 
+	& & Y 
+	\end{tikzcd}
+	\]
+\end{dfn}
+
+
+In a general category, if a monic is a kernel, then it is a kernel of its cokernel. Similarly, if a epi(c) is a cokernel then it is a cokernel of its kernel. However, kernels and cokernels of morphisms do not generally exist in an arbitrary category---though they will for a special class of categories, as we shall see.
+
+
+\begin{prop}
+Assuming that the kernel and cokernel of a morphism exist, they satisfy the following properties:
+	\begin{enumerate}[(i)]
+	\item Any kernel is monic. The converse need not hold.
+	\item Any cokernel is epi. The converse need not hold.
+	\end{enumerate}
+\end{prop}
+
+
+\begin{dfn}[Opposite Category]
+If $\cC$ is a category, we define the opposite category, denoted $\cC^{\text{op}}$, to be the category with the objects of $\cC^{\text{op}}$ to be the objects of $\cC$ with morphisms $\Hom_{\cC^{\text{op}}}(A,B)=\Hom_{\cC}(B,A)$. One might write the morphisms of $\cC^{\text{op}}$ as $f^{\text{op}}$, where $f$ is a morphism of $\cC$. The composition rule in $\cC^{\text{op}}$ is defined by $g^{\text{op}}f^{\text{op}} \defeq (fg)^{\text{op}}$. 
+\end{dfn}
+
+
+\begin{ex}
+If $R$ is a ring (a category with a single object), $R^\text{op}$ is the ring with the same underlying set but the multiplication is reversed, i.e. if $r \cdot_R s=rs$ in $R$, then $r \cdot_{R^\text{op}} s=sr$. The category $\mathbf{R}^\text{op}$-\textbf{mod} of left $\mathbf{R}^\text{op}$-\textbf{modules} is isomorphic to the category \textbf{mod-R} of right $R$-modules. \xqed
+\end{ex}
+
+
+If $f: B \to C$ in a category $\cC$, then there is a morphism $f^{\text{op}}: C \to B$ in $\cC^{\text{op}}$. If $f$ is monic then $f^{\text{op}}$ is epi and if $f$ is epi, then $f^{\text{op}}$ is monic. Furthermore often times, the opposite category is a natural language to define or think about maps between categories, i.e. functors. 
+
+
+
+\subsection{Functors} 
+
+
+
+Now that we have defined categories and maps between objects in these categories, we need define maps between the categories themselves. These maps are called functors. 
+
+
+\begin{dfn}[Functor]
+If $\cC$ and $\cD$ are categories, then a functor $T: \cC \rightarrow \cD$ is a function such that
+	\begin{enumerate}[(i)]
+	\item if $A \in \text{obj } \cC$, then $T(A) \in \text{obj } \cD$
+	\item if $A \ma{f} A'$, where $A,A' \in \cC$, then $T(A) \ma{T(f)} T(A')$ in $\cD$
+	\item If $A \ma{f} A' \ma{g} A''$ in $\cC$, then $T(A) \ma{T(f)} T(A') \ma{T(g)} T(A'')$ in $\cD$ and $T(gf)=T(g)T(f)$
+	\item $T(1_A)=1_{T(A)}$ for every $A \in \text{obj } \cC$
+	\end{enumerate}
+\end{dfn}
+
+
+\noindent That is, functors preserves the identity and preserves compositions. One could say instead, that functors preserve commutative diagrams: functors preserve triangles, they must preserve all commutative diagrams as all commutative diagrams can be triangulated and vice versa. 
+	\[
+	\begin{tikzcd}
+	\cdot \arrow{rr}{gf} \arrow{dr}{f} & & \cdot \\
+	 & \cdot \arrow{ur}{g}
+	\end{tikzcd}
+	\]
+
+
+\begin{ex} \hfill
+	\begin{enumerate}[(i)]
+	\item The identity functor $\id: \cC \rightarrow \cC$ is given by $\id(C) \defeq C$ for all objects $C \in \cC$ and $\id(f) \defeq f$ for all morphisms $f \in \cC$.
+	\item If $\cC,\cD,\cE$ are categories and $\cC \ma{F} \cD$, $\cD \ma{G} \cE$ are functors, then $GF$ is a functor $\cC \ma{GF} \cE$ in the obvious way. 
+	\item If $M$ is a left $R$-module, then $\Hom_R(M,-)$ is a functor $\textbf{R-mod} \rightarrow \textbf{Ab}$ given by $N \mapsto \Hom_R(M,N)$ and the morphism $N \ma{h} N'$ maps to $\Hom_R(M,N) \ma{h_*} \Hom_R(M,N')$. 
+	\item If $M$ is a right $R$-module, then $M \otimes_R -$ is a functor $\textbf{R-mod} \ma{M \otimes_R -} \textbf{Ab}$ given by $_R N \mapsto M \otimes_R N$ on morphisms and the morphism $N \ma{h} N'$ maps to $F(N) \ma{1_N \otimes h} F(N')$. 
+	\end{enumerate} \xqed
+\end{ex}
+
+
+\begin{ex}[Forgetful Functor]
+The forgetful functor is a functor that simply ``forgets'' some of the structure on the objects of a category $\cC$. This is easiest to define in an example. The objects in \textbf{R-mod} are $R$-modules, hence abelian groups. Therefore, we have a functor $\textbf{R-mod} \la \textbf{Ab}$ where the object $C \in \text{ obj} \textbf{ R-mod}$ is simply identified with its corresponding abelian group under addition. Simply put, the forgetful functor has forgotten the $R$-module structure of the set and only remembered its abelian group structure. We also have a forgetful functor from \textbf{Ab} to \textbf{Sets} (hence also from \textbf{R-mod} to \textbf{Sets}), where the functor only remembers the set structure on \textbf{Ab}. \xqed
+\end{ex}
+
+
+\begin{ex}
+Take $P$ the poset given by the diagram below
+	\[
+	\begin{tikzcd}
+	 & \cdot & \\
+	\cdot \arrow{ur}{b} & & \cdot \arrow[swap]{ul}{d} \\
+	 &  \cdot \arrow{ul}{a} \arrow[swap]{ur}{c} &
+	\end{tikzcd}
+	\]
+Since this poset is a category, there is a unique map from the bottommost vertex to the topmost. That is, $ba=dc$. We have a functor $F: R \rightarrow \textbf{R-mod}$ where $\cdot \mapsto \text{R-mod}$ and $\rightarrow$ maps to an $R$- homomorphism. We have $F(ba)=F(dc)$ and by the properties of a functor, $F(b)F(a)=F(d)F(c)$. That is, we have
+	\[
+	\begin{tikzcd}
+	\; & \cdot & & & & & & N & \\
+	\cdot \arrow{ur} & & \cdot \arrow{ul} \arrow{rrrr}{F} & & & & M \arrow{ur} & & L \arrow{ul}  \\
+	  & \cdot \arrow{ul} \arrow{ur} & & & & & & T \arrow{ul} \arrow{ur}  & 
+	\end{tikzcd}
+	\]
+But then the functor $F: P \rightarrow \textbf{R-mod}$ is just a single commutative square of $R$-modules. \xqed
+\end{ex} 
+
+
+\begin{dfn}[Covariant/Contravariant Functor]
+A contravariant functor $F: \cC \rightarrow \cD$ is a functor that reverses directions of arrows; that is, if $\text{obj } \cC \ma{F} \text{obj }\cD$ then $\Hom_{\cC}(C_1,C_2) \la \Hom_{\cD}(F(C_2),F(C_1))$ such that $F(\text{id})=\text{id}$ and $F(gf)=F(f)F(g)$. A covariant functor preserves directions of arrows and are defined exactly as functor previously. So a functor which is not contravariant is covariant and vice versa. 
+\end{dfn}
+
+
+Just as $R$-maps are maps between $R$-modules, functors are maps between categories. Having generalized the notion of maps, we need generalize the notions of injective and surjective for these types of maps.
+
+
+\begin{dfn}[Faithful]
+A functor $F: \cC \rightarrow \cD$ is called faithful if for all $A,B \in \text{obj }\cC$, the functions $\Hom_{\cC}(A,B) \rightarrow \Hom_{\cD}(TA,TB)$ given by $f \mapsto Ff$ are injections. 
+\end{dfn}
+
+
+\begin{dfn}[Full]
+A functor $F: \cC \rightarrow \cD$ is called faithful if for all $A,B \in \text{obj }\cC$, the functions $\Hom_{\cC}(A,B) \rightarrow \Hom_{\cD}(TA,TB)$ given by $f \mapsto Ff$ are surjections. 
+\end{dfn}
+
+
+\begin{dfn}[Fully Faithful]
+A functor which is both faithful and full is called fully faithful. That is, a functor $F: \cC \rightarrow \cD$ is called fully faithful if for all $A,B \in \text{obj }\cC$, the functions $\Hom_{\cC}(A,B) \rightarrow \Hom_{\cD}(TA,TB)$ given by $f \mapsto Ff$ are bijections. 
+\end{dfn}
+
+
+\begin{rem}
+Observe that the definitions above refer only to the maps in $\Hom$ and not to the objects in the category. 
+\end{rem}
+
+
+\begin{ex}
+Let $\cC$ be a category and define $\text{skeleton }\cC$ to be the set of isomorphism classes of the objects of $\cC$. The functor $F: \cC \rightarrow \text{skeleton }\cC$ is fully faithful. 
+\end{ex}
+
+
+\begin{dfn}[Concrete]
+A category $\cC$ is called concrete if there is a faithful functor $F: \cC \to \textbf{Sets}$. 
+\end{dfn}
+
+
+Informally, a concrete category is a category where the morphisms can be regarded as functions. While many familiar categories are concrete, for example, \textbf{Htp}---the homotopy category consisting of objects of topological spaces and morphisms being all homotopy classes of continuous functions---is not concrete, although this is not obvious to show. 
+
+
+
+\subsection{Natural Transformations} 
+
+
+
+In different sets, maps compare the objects. For example, homomorphisms compare algebraic objects, continuous maps compare topological objects, etc.. Natural transformations are what compare functors. 
+
+
+\begin{dfn}[Natural Transformations]
+Let $\cC \ma{F} \cD,\cC \ma{G} \cD$ be (covariant) functors. A natural transformation $\eta: F \rightarrow G$ is a one-parameter family of morphisms in $\cD$
+	\[
+	\eta= \big(\eta_{\cC}: F(C) \rightarrow G(C) \big)_{C \in \text{obj }\cC}
+	\]
+such that the following diagram commutes for all $f: C \rightarrow C'$ in $\text{obj }\cC$:
+	\[
+	\begin{tikzcd}
+	F(C) \arrow{r}{\eta_C} \arrow{d}{F(f)} & G(C) \arrow{d}{G(f)} \\
+	F(C') \arrow{r}{\eta_{C'}} & F('C) 
+	\end{tikzcd}
+	\]
+A natural isomorphism is a natural transformation $\eta$ for which each $\tau_C$ is an isomorphism. We write $\eta: F \ma{\cong} G$. A natural isomorphism is called functorial. 
+\end{dfn}
+
+
+A natural transformation between contravariant functors is defined mutatis mutandis by changing $\cC$ by $\cC^{\text{op}}$. Informally, we say that ``the morphisms $\eta_C: F(C) \rightarrow G(C)$ are natural in $C$.'' That is, the morphism is compatible with the morphisms in $C$. If $\eta$ is a natural isomorphism, there exist natural transformation $\ep: G \rightarrow F$ such that $\eta\ep= 1: G \rightarrow G$ and $\ep\eta=1: F \rightarrow F$. 
+
+
+\begin{ex}
+The Adjoint Isomorphism Theorem is an isomorphism of abelian groups
+	\[
+	\Hom_S(M \otimes_R N, L) \ma{\sim} \Hom_R(M,\Hom_S(N,L))
+	\]
+Recall that if $M \la M'$, then $\Hom_S(M' \otimes N,L) \cong \Hom_R(M',\Hom(M,L))$ and we have the commutative diagram
+	\[
+	\begin{tikzcd}
+	\Hom_S(M' \otimes N,L) \arrow{r} & \Hom(M,\Hom(N,L)) \\
+	\Hom(M \otimes N,L) \arrow{u} \arrow{r} & \Hom(M',\Hom(N,L)) \arrow{u}
+	\end{tikzcd}
+	\]
+That is, there is a natural isomorphism of functors the functors $F=\Hom(-\otimes N, L)$ and $G=\Hom(-,\Hom(N,L))$.
+	\[
+	\begin{tikzcd}
+	F(M) \arrow{r} & G(M)\\
+	F(M') \arrow{u} \arrow{r} & G(M') \arrow{u}
+	\end{tikzcd}
+	\]
+We say that this isomorphism is ``natural in M.'' Thinking of this as a functor of $L$, then it is ``natural in $L$.'' \xqed
+\end{ex}
+
+
+\begin{ex}
+Let \textbf{Vec} be finite dimensional vector spaces over a field $k$. Then $(\;\;)^*=\Hom_R(-,K)$ is a (contravariant) functor. This is dualizing the vector space. We know that $\Hom(k^n,k)=\Hom(k,k)^n=k^n$. Even though $V \cong V^*$, the isomorphism between them is not natural in $V$. That is, there is not a natural transformation $\text{id} \ma{\sim} (\;\;)^*$. This is easy to see as one is covariant and one is contravariant. However, $V \rightarrow V^{**}$ is natural in $V$! That is, there exists a natural isomorphism $\text{id} \rightarrow (\;\;)^{**}$ making the diagram commute. \xqed
+\end{ex}
+
+
+\begin{dfn}[Equivalence]
+A functor $F: \cC \rightarrow \cD$ is called an equivalence of categories if there exists a functor $G: \cD \rightarrow \cC$ such that $GF \ma{\sim} \text{id}_{\cC}$ and $FG \ma{\sim} \text{id}_{\cD}$, where the maps $F,G$ are natural transformations. That is, $F$ is an equivalence of categories if there exists a functor which undoes it.
+\end{dfn}
+
+
+
+\subsection{Yoneda Lemma \& Embedding}
+
+
+
+The Yoneda Lemma and the Yoneda Embeddings are, in a sense, the fundamental theorems in Category Theory. 
+
+
+\begin{thm}[Yoneda Lemma]
+Let $\cC$ be a category, let $A \in \cC$, and let $G: \cC \to \textbf{Sets}$ be a covariant functor. Then there is a bijection
+	\[
+	y: \text{Nat}(\Hom_\cC(A,-),G) \ma{} G(A)
+	\]
+given by $y: \tau \mapsto \tau_A(1_A)$. 
+\end{thm}
+
+\pf We follow the the proof from \emph{Introduction to Homological Algebra}, Rotman. If $\tau: \Hom_\cC(A,-) \to G$ is a natural transformation, then $y(\tau)=\tau_A(1_A)$ lies in the set $G(A)$, for $\tau_A: \Hom_\cC(A,A) \to G(A)$. Thus, $y$ is a well defined function.
+
+For each $B \in \cC$ and $\phi \in \Hom_\cC(A,B)$, there is a commutative diagram 
+	\[
+	\begin{tikzcd}
+	\Hom_\cC(A,A) \arrow[swap]{d}{\phi_*} \arrow{r}{\tau_A} & GA \arrow{d}{G\phi} \\
+	\Hom_\cC(A,B) \arrow[swap]{r}{\tau_B} & GB
+	\end{tikzcd}
+	\]
+so that 
+	\[
+	(G\phi)\tau_A (1_A)= \tau_B \phi_*(1_A)= \tau_B(\phi 1_A)=\tau_B(\phi).
+	\]
+If $\sigma: \Hom_\cC(A,-) \to G$ is another natural transformation, then $\sigma_B(\phi)=(G\phi)\sigma_A(1_A)$. Hence, if $\sigma_A(1_A)=\tau_A(1_A)$, then $\sigma_B=\tau_B$ for all $B \in \cC$ and, hence, $\sigma=\tau$. Therefore, $y$ is an injection.
+
+To see that $y$ is a surjection, take $x \in G(A)$. For $B \in \cC$ and $\psi \in \Hom_\cC(A,B)$, define
+	\[
+	\tau_B(\psi)=(G\psi)(x).
+	\]
+We claim that $\tau$ is a natural transformation; that is, if $\theta: B \to C$ is a morphism in $\cC$, then the following diagram commutes:
+	\[
+	\begin{tikzcd}
+	\Hom_\cC(A,B) \arrow[swap]{d}{\theta_*} \arrow{r}{\tau_B} & GB \arrow{d}{G\theta} \\
+	\Hom_\cC(A,C) \arrow[swap]{r}{\tau_C} & GC.
+	\end{tikzcd}
+	\]
+Going clockwise, we have $(G\theta)\tau_B(\psi)=G\theta G\psi(x)$; going counterclockwise, we have $\tau_C\theta_*(\psi)=\tau_C(\theta\psi)=G(\theta\psi)(x)$. Since $G$ is a functor, however, $G(\theta\psi)=G\theta G\psi$; thus, $\tau$ is a natural transformation. Now $y(\tau)=\tau_A(1_A)=G(1_A)(x)=x$, and so $y$ is a bijection. \qed \\
+
+
+\begin{dfn}[Representable]
+A (covariant) functor $F: \cC \to \textbf{Sets}$ is representable if there exists $A \in \cC$ with $F \cong \Hom_\cC(A,-)$. 
+\end{dfn}
+
+
+\begin{cor}
+Let $\cC$ be a category and let $A,B \in \cC$.
+	\begin{enumerate}[(i)]
+	\item If $\tau: \Hom_\cC(A,-) \to \Hom_\cC(B,-)$ is a natural transformation, then for all $C \in \cC$, we have $\tau_C= \psi^*$, where $\psi= \tau_A(1_A): B \to A$ and $\psi^*$ is the induced map $\Hom_\cC(A,C) \to \Hom_\cC(B,C)$ given by $\phi \mapsto \phi\psi$. Moreover, the morphism $\psi$ is unique: if $\tau_C=\phi^*$, then $\theta=\psi$.
+	\item Let $\Hom_\cC(A,-) \ma{\tau} \Hom_\cC(B,-) \ma{\sigma} \Hom_\cC(B',-)$ be natural transformations. If $\sigma_C=\eta^*$ and $\tau_C=\psi^*$ for all $C \in \cC$, then 
+		\[
+		(\sigma\tau)_C=(\psi\eta)^*.
+		\]
+	\item If $\Hom_\cC(A,-)$ and $\Hom_\cC(B,-)$ are naturally isomorphic functors, then $A \cong B$. [The converse is also true.]
+	\end{enumerate}
+\end{cor}
+
+
+In a colloquial sense, the Yoneda Lemma states that if you know how an object relates to all other object, then you know everything about the object itself. To define the Yoneda Embedding, we need define another special category. 
+
+
+\begin{dfn}[Functor Category]
+Given two categories $\cA,\cB$, the functor category $\cB^{\cA}$ is a category whose objects are all (covariant) functors $\cA \rightarrow \cB$ and whose morphisms are natural transformations. 
+\end{dfn}
+
+
+\begin{prop}
+The functor category is a category. Furthermore, if $\cB$ is an abelian category then so is $\cB^{\cA}$. 
+\end{prop}
+
+
+\begin{prop}[Yoneda Embedding]
+The Yoneda embedding of a small category $\cA$ is the functor $\cA \rightarrow \textbf{Sets}^{\cA^{\text{op}}}$ that is injective on objets and whose image is a full subcategory of $\textbf{Sets}^{\cA}$. 
+\end{prop}
+
+\pf We again follow the proof from \emph{Introduction to Homological Algebra}, Rotman. Define $Y$ on objects $Y(A)=\Hom_\cC(A,-)$. If $A \neq A'$, then pairwise disjointness of Hom sets gives $\Hom_\cC(A,-) \neq \Hom_\cC(A',-)$; that is, $Y(A) \neq Y(A')$, and so $Y$ is injective on all objects. If $\psi: B \to A$ is a morphism in $\cC$, then there is a natural transformation $Y(\psi): \Hom_\cC(A,-) \to \Hom_\cC(B,-)$ with $Y(\psi)_C=\psi^*$ for all $C \in \cC$. 
+
+
+
+\begin{prop}
+If $\cA$ is a small abelian category, then there is a ring $R$ and an exact, fully faithful functor from $\cA$ into \textbf{R-mod}, which embeds $\cA$ as a full subcategory in the sense that $\Hom_{\cA}(M,N) \cong \Hom_R(M,N)$. 
+\end{prop}
+
+\pf See Weibel 1.6.1 pg 25. (1st ed, 1995). \qed \\
+
+
+In a colloquial sense, the Yoneda imbedding says that every small category is a full subcategory of a category of presheaves. 

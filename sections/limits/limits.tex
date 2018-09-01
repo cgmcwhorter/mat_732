@@ -1,0 +1,930 @@
+% !TEX root = ../../homo_alg.tex
+\newpage
+\section{Categorical Limits \& Constructions} 
+\subsection{Additive Categories}
+
+
+Our goal was to generalize \textbf{R-mod} to a general categorical setting. We begin by generalizing the notions of \textbf{Ab} to a categorical setting. This is provides the base for interesting Category Theory to common categories of interest: modules, chain complexes, and sheaves. 
+
+
+\begin{dfn}[Additive Category]
+A category $\cC$ is additive if 
+	\begin{enumerate}[(i)]
+	\item $\Hom_{\cC}(A,B)$ is an additive abelian group for all $A,B \in \text{obj }\cC$.
+	\item the distributive laws hold: given morphisms
+		\[
+		\begin{tikzcd}
+		X \arrow{r}{a} & A \arrow[yshift=0.75ex]{r}{f} \arrow[yshift=-0.75ex,swap]{r}{g} & B \arrow{r}{b} & Y \\
+		\end{tikzcd}
+		\]
+where $X,Y \in \cC$, then 
+		\[
+		b(f+g)=bf+bg \quad \text{ and } \quad (f+g)a=fa+ga
+		\]
+	\item $\cC$ has a zero object.
+	\item $\cC$ has finite products and coproducts.
+	\end{enumerate}
+\end{dfn}
+
+
+\begin{ex}
+The category of both left and right $R$-modules are additive categories but neither the category of groups nor the category of commutative rings is an additive category. Finally, the category of both presheaves of abelian groups and category of sheaves of abelian groups are additive categories. \xqed 
+\end{ex}
+
+
+\begin{prop}
+Let $f: A \to B$ be a morphism in an additive category $\cC$.
+	\begin{enumerate}[(i)]
+	\item if $\ker f$ exists, then $f$ is monic if and only if $\ker f=0$.
+	\item If $\coker f$ exists, then $f$ is epic if and only if $\coker f=0$. 
+	\end{enumerate}
+\end{prop}
+
+\pf Let $\ker f$ be $\iota: K \to A$ and assume that $\iota=0$. Consider the following diagram:
+	\[
+	\begin{tikzcd}
+	A \arrow[yshift=0.75ex]{r}{g} \arrow[yshift= -0.75ex,swap]{r}{h} & B \arrow{r}{f} & C
+	\end{tikzcd}
+	\]
+If $g: X \to A$ satisfies $ug=0$, then the universal property of the kernel gives a morphism $\theta: X \to K$ with $g=\iota\theta=0$. But then $f$ is monic. Conversely, if $f$ is monic, then 
+	\[
+	\begin{tikzcd}
+	K \arrow[yshift=0.75ex]{r}{\iota} \arrow[yshift=-0.75ex,swap]{r}{0} & A \arrow{r}{f} & B
+	\end{tikzcd}
+	\]
+Since $u\iota=0=f0$, we have $\iota=0$. The proof for $\coker f$ follows mutatis mutandis. \qed \\
+
+
+\begin{dfn}[Additive Functor]
+If $\cC$ and $\cD$ are additive categories, a functor $F: \cC \la \cD$ is additive if for all $A,B$ and all $f,g \in \Hom(A,B)$, we have
+	\[
+	F(f+g)=F(f)+F(g)
+	\]
+That is, the function $\Hom_{\cC}(A,B) \la \Hom_{\cD}(F(A),F(B))$ given by $f \mapsto Ff$ is a homomorphism of abelian groups. 
+\end{dfn}
+
+
+\begin{rem}
+If $\cC$ and $\cD$ are additive categories and $T: \cC \to \cD$ is an additive functor, then $T(A \oplus B) \cong T(A) \oplus T(B)$ for all $A,B \in \cC$. 
+\end{rem}
+
+
+\begin{ex}
+The Hom functor from $R$-modules to abelian groups is additive, as is the tensor functor. \xqed
+\end{ex}
+
+
+Note that if $T$ is an additive functor, then $T(0)=0$, where 0 is either a zero object or a zero morphism. We are now prepared to define the type of category with which we will be most interested in working.
+
+
+\begin{dfn}[Abelian Category]
+A category $\cC$ is an abelian category if it is an additive category such that 
+	\begin{enumerate}[(i)]
+	\item every morphism has a kernel and cokernel
+	\item every monomorphism is a kernel and every epimorphism is a cokernel
+	\end{enumerate}
+\end{dfn}
+
+
+\begin{ex} \hfill
+	\begin{enumerate}[(i)]
+	\item For every ring $R$, the category of left or right $R$-modules are abelian categories. in particular, $_\Z$\textbf{-Mod}$=$\textbf{Ab} is abelian.
+	\item The full subcategory of \textbf{Ab} of all finitely generated abelian groups is an abelian category, as is the full subcategory of all torsion abelian groups. 
+	\item The full subcategory of \textbf{Ab} of all torsion-free abelian groups is not an abelian category---not all morphisms have cokernels. For example, the canonical inclusion $2\Z \to \Z$ has cokernel $\Z/2\Z$, which is not torsion free. 
+	\end{enumerate} \xqed
+\end{ex}
+
+
+Note these definitions require the existence of the kernel and cokernel for \emph{every} morphism. Not every morphism in a general category will have such nice properties. Even if a given morphism has these properties in a particular category, there is no reason that any other morphism in the category should have these properties. Furthermore in an abelian category, every map $B \ma{f} C$ factors as $B \ma{e} \im f \ma{m} C$, where $e$ epi(c) and $m$ monic. The fact that every morphism in an abelian category has restricted Hom structures, a zero object, and kernels/cokernels is actually sufficient to define a notion of exactness. 
+
+
+\begin{dfn}[Image]
+Let $f: A \to B$ be a morphism in an abelian category $\cC$. Let $\coker f$ be $\tau: B \to C$ for some object $C$. Then the image of $f$, denoted $\im f$, is $\im f:= \ker(\coker f)=\ker \tau$. 
+\end{dfn}
+
+
+\begin{dfn}[Exact]
+A sequence of maps $A \ma{f} B \ma{g} C$ is exact (at $B$) if $\im f \cong \im \ker g$. Longer sequence are exact if they are exact at each object except those at the ends (this is not a problem if the sequence is infinite). A short exact sequence is a sequence of the form
+	\[
+	0 \ma{} A \ma{f} B \ma{g} C \ma{} 0
+	\]
+\end{dfn}
+
+
+\begin{prop}
+\textbf{R-mod} and \textbf{Ab} are abelian categories with $\ker f,\coker f,\im f$ satisfying the traditional definitions. 
+\end{prop}
+
+
+\begin{dfn}[Exact Functor]
+Let $F: \cA \rightarrow \cB$ be an additive (covariant) functor between abelian categories. We say that $F$ is left exact if for all short exact sequences
+	\[
+	0 \ma{} A \ma{} B \ma{} C \ma{} 0
+	\]
+in $\cA$, the sequence 
+	\[
+	0 \ma{} F(A) \ma{} F(B) \ma{} F(C)
+	\]
+is exact. Right exactness is defined mutatis mutandis. The functor $F$ is called exact if it is both left and right exact. A contravariant functor is left exact (mutatis mutandis right exact) if the functor $F': \cA^{\text{op}} \rightarrow \cB$ is left exact. 
+\end{dfn}
+
+
+\begin{prop}
+$F$ is exact if and only if it preserves exact sequences. 
+\end{prop}
+
+
+One can also further define projective and injective for general abelian categories.
+
+\begin{dfn}[Projective/Injective]
+An object $P$ in an abelian category $\cA$ is projective if, for every epi $g: B \to C$ and every $f: P \to C$, there exists $h: P \to B$ with $f=gh$.
+	\[
+	\begin{tikzcd}
+	& P \arrow[dotted,swap]{dl}{h} \arrow{d}{f} \\
+	B \arrow[swap]{r}{g} & C
+	\end{tikzcd}\quad\quad\begin{tikzcd}
+	E & \\
+	A \arrow{u}{f} \arrow{r}{g} & B \arrow[dotted,swap]{ul}{h}
+	\end{tikzcd}
+	\]
+AN object $E$ in an abelian category $\cA$ is injective if, for every monic $g: A \to B$ and every $f: A \to E$, there exists $h: B \to E$ with $f=hg$.
+\end{dfn}
+
+
+\begin{dfn}[Enough]
+An abelian category $\cA$ has enough injectives, if for every $A \in \cA$, there exist an injective $E$ and a monic $A \to E$. Dually, $\cA$ has enough projectives if, for every $A \in \cA$, there exist a projective $P$ and an epi $P \to A$. 
+\end{dfn}
+
+
+It has been our goal to generalize $R$-modules to a general categorical setting. However, in some sense, the category of $R$-modules is `sufficient' in that proving things in the case of $R$-modules is often enough.
+
+
+\begin{thm}[Mitchell Embedding]
+If $\cA$ is a small abelian category, then there is a covariant full faithful exact functor $F: \cA \to \textbf{Ab}$.
+\end{thm}
+
+\pf See \emph{Theory of Categories}, Mitchell, p. 151.. \qed \\
+
+
+
+\subsection{Adjoint Functors}
+
+
+
+Recall the adjoint isomorphism : given modules $A_R$, $_RB_S$, and $C_S$, there is a natural isomorphism
+	\[
+	\tau_{A,B,C}: \Hom_S(A \otimes_R B, C) \ma{} \Hom_R(A, \Hom_S(B,C)).
+	\]
+Writing $F= - \otimes_R B$ and $G= \Hom_S(B,-)$, then the isomorphism reads
+	\[
+	\Hom_S(FA,C) \cong \Hom_R(A,GC).
+	\]
+Writing $\Hom(-\,,\,-)$, this should remind the reader of Linear Algebra: if $T: V \to W$ is a linear transformation between vector spaces (having inner products), then the adjoint is the linear transformation $T^*: W \to V$ with $\langle Tv,w \rangle = \langle v,T^*w \rangle$ for all $v \in V, w \in W$. 
+
+
+\begin{dfn}[Adjoint Pair]
+Let $\cA,\cB$ be categories. A pair of (covariant) functors $\begin{tikzcd} \cA \arrow[yshift=0.5ex]{r}{F} & B \arrow[yshift= -0.5ex]{l}{G} \end{tikzcd}$ are an adjoint pair if for all $A \in \cA$ and $B \in \cB$, there is a bijection
+	\[
+	\Hom_\cB(F(A),B) \ma{\tau_{A,B}} \Hom_\cA(A,G(B))
+	\]
+that are natural transformations in $\cA$ and $\cB$. That is, the following two diagrams commute for all $f: A' \rightarrow A$ in $\cA$ and $g: B \rightarrow B'$ in $\cB$:
+	\[
+	\begin{tikzcd}
+	\Hom_\cB(F(A),B) \arrow{r}{(Ff)^*} \arrow{d}{\tau_{A,B}} & \Hom_\cB(F(A'),B) \arrow{d}{\tau_{A',B}} \\
+	\Hom_\cA(A,G(B)) \arrow{r}{f^*} & \Hom_\cA(A',G(B))
+	\end{tikzcd}  \begin{tikzcd}
+\Hom_\cB(F(A),B) \arrow{r}{g_*} \arrow{d}{\tau_{A,B}} & \Hom_\cB(F(A),B') \arrow{d}{\tau_{A,B'}} \\
+\Hom_\cA(A,G(B)) \arrow{r}{(Gg)_*} & \Hom_\cA(A,G(B'))
+\end{tikzcd}
+	\]
+We say that $F$ is the left adjoint of $G$ and $G$ is the right adjoint of $F$ and that $(F,G)$ form an adjoint pair. 
+\end{dfn}
+
+
+\begin{ex}
+If $R,S$ are rings and $_S M_R$ is a bimodule, then $\big( - \otimes_S M, \Hom_R(M,-) \big)$ is an adjoint pair. Similarly, if $_R M_S$ is a bimodule, $(M \otimes_S -, \Hom_R(M,-))$ is an adjoint pair. \xqed
+\end{ex}
+
+
+\begin{ex}
+Consider $\begin{tikzcd} \textbf{Sets} \arrow[yshift=0.5ex]{r}{F} & \textbf{Vec} \arrow[yshift= -0.5ex]{l}{G} \end{tikzcd}$, where $F(X)=$ the vector space generated by the basis $X$ over $k$ and $G(V)$ is just $V$ as a set (the forgetful functor on \textbf{Vec}). We know that $\Hom_{\textbf{Vec}}(F(X),V) \ma{\sim} \Hom_{\textbf{Sets}}(X,G(V))$ so that $(F,G)$ is an adjoint pair. \xqed
+\end{ex}
+
+
+\begin{thm}
+Let $\begin{tikzcd} \cA \arrow[yshift=0.5ex]{r}{F} & B \arrow[yshift= -0.5ex]{l}{G} \end{tikzcd}$ be (covariant) functors. Then $(F,G)$ is an adjoint pair if and only if there are natural transformations $1_\cA \ma{\eta} GF$ and $FG \ma{\ep} 1_\cB$ so that the compositions $F \ma{F\eta} FGF \ma{\ep F}F$ are the identity (natural transformation).
+\end{thm}
+
+\pf L.T.R. [Hint: Given $\eta \ep$, we get $\Hom(F(A),B) \ma{\tau} \Hom(A,G(B))$ where $f \mapsto Gf \eta_A$ in one direction. $\eta_A: A \rightarrow GF(A) \rightarrow B$.] \qed \\
+
+
+\begin{rem}
+Note that adjointness applies to an adjoint pair $(F,G)$. It is not generally the case that $(G,F)$ is an adjoint pair. As an example, take $F= - \otimes B$ and $G= \Hom(B,-)$. The Adjoint Isomorphism Theorem states that $(F,G)$ is an adjoint pair: $\Hom(A, B \otimes C) \cong \Hom(A, \Hom(B,C))$, i.e. $\Hom(FA,C) \cong \Hom(A,GC)$. However, if $A=\Q$, $B=\Q/\Z$, and $C=\Z$, then $\Hom(G\Q,\Z) \not\cong \Hom(\Q,F\Z)$ as
+	\[
+	\{0\}= \Hom(\Hom(\Q/\Z,\Q),\Z) \not\cong \Hom(\Q, (\Q/\Z) \otimes \Z) \cong \Hom(\Q,\Q/\Z).
+	\]
+\end{rem}
+
+
+Adjoint pairs have nice exactness properties.
+
+
+\begin{thm}
+Let $\cA,\cB$ be abelian categories and let $(F,G)$ be an adjoint pair. Then $F$ is right exact and $G$ is left exact. 
+\end{thm}
+
+\pf We only prove that $F$ is right exact. Let $0 \la A' \la A \la A'' \la 0$ be an exact sequence in $\cA$. We know that $\Hom$ is left exact for any abelian category (the proof is similar to that of the proof for $R$-modules). So for all $B \in \cB$, we have the exact sequence
+	\[
+	0 \ma{} \Hom_\cA(A'',G(B)) \ma{} \Hom_\cA(A,G(B)) \ma{} \Hom_\cA(A',G(B))
+	\]
+Now using the adjoint isomorphism on the adjoint pair $(F,G)$, we have the exact sequence
+	\[
+	0 \ma{} \Hom_\cB(F(A''),B) \ma{} \Hom(F(A),B) \ma{} \Hom(F(A'),B)
+	\]
+The squares in the diagram below commute by the naturality of the adjoint isomorphism so that the above sequence must also be exact. 
+	\[
+	\begin{tikzcd}
+	0 \arrow{r} & \Hom_{\mathcal{A}}(A'',G(B))  \arrow{r} \arrow{d} & \Hom_{\mathcal{A}}(A,G(B))  \arrow{r} \arrow{d} & \Hom_{\mathcal{A}}(A',G(B)) \arrow{d} \\
+	0 \arrow{r} & \Hom_{\mathcal{B}}(F(A''),B) \arrow{r} & \Hom_{\mathcal{B}}(F(A),B) \arrow{r} & \Hom_{\mathcal{B}}(F(A'),B)  
+	\end{tikzcd}
+	\]
+By a lemma of Yoneda, Hom reflects exact sequences so that
+	\[
+	F(A') \la F(A) \la F(A'') \la 0
+	\] 
+is exact. But then $F$ is right exact. \qed \\
+
+
+
+\subsection{Colimits} 
+
+
+
+Here is an overview of what will be to come:
+	\begin{center}
+	\begin{tabular}{c|c}
+	Covariant & Contravariant \\ \hline\hline 
+	Colimit (Direct Limit): $\colim M_i$, $\dlim M_i$ & Limit (Inverse Limit): $\lim M_i$, $\plim M_i$ \\[0.1cm]
+	Coproduct (Direct Sum): $\coprod M_i$, $\bigoplus M_i$ & Product: $\prod M_i$ \\
+Cokernels & Kernels \\ 
+	Unions of Sets & Intersection of Sets \\ 
+	Pushout: $\begin{tikzcd} L \arrow{r} \arrow{d} & N \\ M & *\end{tikzcd}$ & Pullback: \begin{tikzcd} *& N \arrow{d} \\ M \arrow{r} & L \end{tikzcd}
+	\end{tabular}
+	\end{center}
+
+
+Given a collection of $\{M_i\}$ in $\cC$, the direct sum $\oplus M_i$, i.e. the coproduct, $\coprod M_i$, is an object in $\cC$ with maps (called inclusions) $M_i \ma{\eta_i} \oplus M_i$ and the following universal mapping property: for any $N$ and collection of maps $\{M_i \ma{f_i} N\}$ in $\cC$, there is a unique map $\oplus M_i \ma{f} N$ such that $f_i=f\eta_i$. This gives the following diagram
+	\[
+	\begin{tikzcd}
+	\mdots & & & & \\
+	M_j \arrow{drr}{\eta_i} \arrow[bend left=50]{rrrrd}{\forall f_j} & & & & \\
+	\mdots  & & \bigoplus M_i \arrow[dotted]{rr}{\exists! \, f}& & N \\
+	M_k \arrow[swap]{urr}{\eta_k} \arrow[bend right=50,swap]{rrrru}{\forall f_k}& & & & \\
+	\mdots & & & & 
+	\end{tikzcd}
+	\]
+That is, this object is the ``closest thing to all the $M_i$'s so that all maps from all the $M_i$'s are forced to go through it.'' The idea of a colimit is a generalization of this notion. Before we can rigorously define it, we need some preliminary definitions. 
+
+
+\begin{dfn}[Direct System]
+A (direct) system of objects in a category $\cC$ is a functor $F: I \rightarrow \cC$, where $I$ is a poset. That is, given a partially ordered set $I$ and a category $\cC$, a direct system in $\cC$ is an ordered pair $\big( (M_i)_{i \in \cI}, (\varphi^i_j)_{i \leq j}\big)$, often abbreviated $\{M_i,\varphi^i_j\}$, where $\varphi^i_i=1_{M_i}$, such that the following diagram commutes for all $i \leq j \leq k$:
+	\[
+	\begin{tikzcd}
+	M_i \arrow{rr}{\varphi_k^i} \arrow[swap]{dr}{\varphi_j^i} & & M_k \\
+	& M_j \arrow[swap]{ur}{\varphi^j_k} & 
+	\end{tikzcd}
+	\]
+\end{dfn}
+The partially ordered set $I$, when viewed as a category in its own right, has objects being the elements of $I$ and morphisms the unique morphisms $\kappa_j^i$ whenever $i \leq j$. Then a direct system in $\cC$ over $I$ are the covariant functors $M: I \rightarrow \cC$, $M(i)=M_i$ and $M(\kappa_j^i)=\varphi_j^i$. 
+
+
+\begin{rem}
+One should be clear when one is talking about a direct system and when one is talking about a \emph{directed} system, which we shall define later.
+\end{rem}
+
+
+\begin{ex}
+The diagram on the left is a poset while the diagram on the right is a diagram of $R$-modules. The (direct) system is a functor which takes the objects in the poset to the corresponding modules on the right and takes the arrows to their corresponding arrows. 
+	\[
+	\begin{tikzcd}
+	\cdot &  &  &  &  &  & M_1 &  &  \\
+	& \cdot &  &  &  &  &  & M_3 &  \\
+	\cdot \arrow{uu} \arrow{ur}&  & \cdot \arrow{ul} &  &  \longrightarrow &  & M_2 \arrow{uu} \arrow{ur} &  & M_4 \arrow{ul} \\
+ 	& \cdot \arrow{ul} \arrow{ur} &  &  &  &  &  & M_5 \arrow{ul} \arrow{ur} & 
+	\end{tikzcd}
+	\]
+Again, recall that there is a loop at each vertex (the identity morphism) which we omit. \xqed
+\end{ex}
+
+
+\begin{ex}
+If $I=\{1,2,3\}$ is the partially ordered set in which $1 \leq 2$ and $1 \leq 3$, then a direct system over $I$ is a diagram of the form
+	\[
+	\begin{tikzcd}
+	A \arrow{r}{f} \arrow[swap]{d}{g} & B \\
+	C & 
+	\end{tikzcd}
+	\] \xqed
+\end{ex}
+
+
+We are now in a position to define the colimit.
+
+
+\begin{dfn}[Colimit Limit]
+Let $I$ be a partially ordered set. Let $\cC$ be a category, and let $\{M_i,\varphi^i_j\}$ be a direct system in $\cC$ over $I$. The colimit (or direct limit, injective limit, or inductive limit) is an object $\dlim M_i$ and insertion morphisms $(\alpha_i: M_i \rightarrow \dlim M_i)_{i \in I}$ such that
+	\begin{enumerate}[(i)]
+	\item $\alpha_j \varphi_j^i=\alpha_i$ whenever $i\leq j$
+	\item Let $X \in \cC$ and $f_i: M_i \rightarrow X$ be a morphism with $f_j \varphi_j^i=f_i$ for all $i \leq j$. There exists a unique morphism $\theta: \dlim M_i \rightarrow X$ making the following diagram commute
+		\[
+		\begin{tikzcd}
+		\dlim M_i \arrow[dotted]{rr}{\theta} & & X \\
+		& M_i \arrow{ul}{\alpha_i} \arrow[swap]{ur}{f_i} \arrow{d}{\varphi_j^i} & \\
+		& \arrow[bend left = 50]{uul}{\alpha_j} M_j  \arrow[bend right=50ex,swap]{uur}{f_j} & 
+		\end{tikzcd}
+		\]
+	\end{enumerate}
+The colimit is also called the direct limit, inductive limit, or when the situation is clear just limit. 
+\end{dfn}
+
+
+
+
+
+\begin{prop}
+Whenever it exists, the colimit (direct limit) of a system is unique up to isomorphism.
+\end{prop}
+
+\pf This is the usual proof. Let $I$ be a partially ordered set and let $\{M_i,\varphi^i_j\}$ be a direct system in $\cC$ over $I$. Suppose that $X= \dlim M_i$ and $\tilde{X}= \dlim M_i$ are colimits with insertion maps $(\alpha_i: M_i \to \dlim M_i)_{i \in I}$ and $(\beta_i: M_i \to \dlim M_i)_{i \in I}$, respectively. There then exists a unique map $\theta: X \to \tilde{X}$ making the diagram commute. Similarly, there exists a unique map $\psi: \tilde{X} \to X$ also making the diagram commute.
+		\[
+		\begin{tikzcd}
+		X \arrow[dotted]{rr}{\theta} & & \tilde{X} \arrow[dotted]{rr}{\psi} & & X \\
+		& M_i \arrow{ul}{\alpha_i} \arrow[swap]{ur}{f_i} \arrow{d}{\varphi_j^i} & & M_i \arrow{ul}{\beta_i} \arrow[swap]{ur}{g_i} \arrow{d}{\varphi_j^i} & \\
+		& \arrow[bend left = 20]{uul}{\alpha_j} M_j  \arrow[bend right=20ex,swap]{uur}{f_j} & & \arrow[bend left = 20]{uul}{\beta_j} M_j  \arrow[bend right=20ex,swap]{uur}{g_j} & 
+		\end{tikzcd}
+		\]
+But then $\psi\theta: X \to X$ is a unique morphism, being the composition of unique morphisms. But as we always have $1_X: X \to X$, it must be that $\psi\theta=1_X$. Replacing $X$ with $\tilde{X}$, mutatis mutandis, we have $\theta\psi=1_X$. It is then clear that $X \cong \tilde{X}$. \qed \\
+
+
+\begin{ex}
+Consider the direct system
+	\[
+	\begin{tikzcd}
+	M_1 \arrow{d}{\varphi_2'=\varphi} \\
+	M_2
+	\end{tikzcd}
+	\]
+What is the colimit (if it exists) of this system. Let's assume that the colimit exists and call it $L$. Then we have the following diagram 
+	\[
+	\begin{tikzcd}
+	M_1 \arrow[bend left=50]{rrd}{f_1} \arrow{dr}{i_1} \arrow[swap]{dd}{\varphi} & & \\
+	& L \arrow[dotted]{r}{\exists! f} & T  \\
+	M_2 \arrow[swap]{ur}{i_2} \arrow[bend right=50,swap]{rru}{f_2} & & 
+	\end{tikzcd}
+	\]
+where the diagram is such that $f_1=f_2\varphi$. So $f_1$ is determined by $f_2$. Observe also that $i_2 \varphi=i_1$. We need an object $L$ with a maps $M_1 \ma{i_1} L$, $M_2 \ma{i_2} L$, and $L \ma{f} T$. We guess $L=M_2$, with $i_1=\varphi$, $i_2=1_{M_2}$ and $f=f_2$. It is simple to check that these definitions satisfy the requirements. As the colimit is unique, we have found the colimit. \xqed
+\end{ex}
+
+
+\begin{ex}
+In \textbf{Sets}, consider a chain of subsets of a set $X$,
+	\[
+	U_1 \subseteq U_2 \subseteq U_3 \subseteq \cdots,
+	\]
+where $\subseteq$ is really the inclusion map. What is the colimit of this system? We want maps to an object $L$ that are compatible with the system, i.e. compatible with inclusion. As the $U_i$'s do not necessarily cover $X$, it is necessary that we choose $L=\bigcup U_i$. Take the map $U_i \to L$ to be $f(l)=f_{i(l)}$ if $l \in U_i$, the normal inclusion map. One need verify that this is well defined, i.e. $f_{i+1} \big|_{U_i}=f_i$. But then it is clear that $\dlim (U_1 \subseteq U_2 \subseteq \cdots)= \bigcup U_i$. \xqed
+\end{ex}
+
+
+\begin{ex}[Pushout]
+The colimit of the diagram/system of the form $\begin{tikzcd} L \arrow{r}{\varphi} \arrow[swap]{d}{\psi} & N \\ M & \end{tikzcd}$ is called the pushout (or fibered sum). Specifically, given two morphisms $\varphi: L \to N$ and $\psi: L \to M$ in a category $\mathcal{C}$ is a triple $(D,\alpha,\beta)$ with $\beta g=\alpha f$ that is a solution to the universal mapping problem. That is, for every triple $(Y,\alpha',\beta')$ with $\beta' g=\alpha' g$, there is a unique $\theta: D \to Y$ making the diagram commute. The pushout is denoted $M \cup_L N$. 
+	\[
+	\begin{tikzcd}
+	L \arrow{r}{\varphi} \arrow[swap]{d}{\psi} & N \arrow{d}{\beta} \arrow[yshift=1ex]{ddr}{\beta'} &  \\
+	M \arrow[swap]{r}{\alpha} \arrow[swap,yshift= -1ex]{drr}{\alpha'} & D \arrow[dotted]{dr}{\theta} &  \\
+ 	&  & Y \\
+	\end{tikzcd}
+	\] \xqed
+\end{ex}
+
+
+\begin{ex} \hfill
+	\begin{enumerate}[(i)]
+	\item If $B,C$ are submodules of some left $R$-module $M$, there are inclusions $f: B \cap C \to B$ and $g: B \cap C \to C$. It is routine to verify that the pushout in \textbf{R-mod} exists and that it is $B+C$. 
+	\item If $B,C$ are subsets of some set $U$, there are inclusions $f: B \cap C \to B$ and $g: B \cap C \to C$. The pushout in \textbf{Sets} is $B \cup C$. 
+	\item The pushout exists for \textbf{Groups}. The pushout for two injective homomorphisms is called the free product with amalgamation. Observe that this is closely related to the van Kampen Theorem. 
+	\end{enumerate} \xqed
+\end{ex}
+
+
+\begin{prop} \label{prop:pushout}
+In $\textbf{R-mod}$, the pushout of two maps $\varphi: L \to N$ and $\psi: L \to M$ exists. 
+\end{prop}
+
+\pf Let $S=\{(\psi(l), \,-\varphi(l)) \in M \oplus N \;|\; l \in L \}$. Define $D=(M \oplus N)/S$, $\alpha: M \to D$ by $m \mapsto (m,0)+S$, and $\beta: N \to D$ by $n \mapsto (0,n) + S$. Then we have the diagram
+	\[
+	\begin{tikzcd}
+	L \arrow{r}{\varphi} \arrow[swap]{d}{\psi} & N \arrow{d}{\beta} \\
+	M \arrow[swap]{r}{\alpha} & D   \\
+	\end{tikzcd}
+	\]
+It is routine to verify that this diagram commutes. Given another triple $(X,\alpha',\beta')$, simply define $\theta: D \to X$ by $\theta: (m,n) +S \mapsto \alpha'(m)+\beta'(n)$. Uniqueness is left to the reader. \qed \\
+
+
+\begin{prop}
+In an abelian category, a pushout $\begin{tikzcd} L \arrow{r}{\varphi} \arrow[swap]{d}{\psi} & N \\ M & \end{tikzcd}$ is $\coker(L \to M \times N)$, where the map is given by the universal mapping property for $A \times B$. 
+\end{prop}
+
+\pf L.T.R. [The proof is the same as in Proposition~\ref{prop:pushout}.] \qed \\
+
+
+\begin{ex}
+Let $k,A,B$ be commutative rings. Then the pushout of $\begin{tikzcd} k \arrow{r} \arrow[swap]{d} & A \\ B & \end{tikzcd}$, i.e. $A,B$ are $k$-algebras, is $A \otimes_k B$. \xqed 
+\end{ex}
+
+
+\begin{cor}
+The coproduct in the category of commutative $k$-algebras is $A \otimes_k B$. 
+\end{cor}
+
+
+\begin{rem}
+Taking $k=\Z$ (any ring $A$ has a map $\Z \to A$ given by $1 \mapsto 1$ so that $n \mapsto n 1_A$), we obtain the coproduct in commutative rings $A \otimes_\Z B$. 
+\end{rem}
+
+
+Note that in \textbf{Rings}, pushouts behave oddly because this category is \emph{not} abelian. For the next proof, it will be beneficial to consider the following examples of pushouts:
+
+
+\begin{ex}
+The colimit (pushout) of the system $\begin{tikzcd} 0 \arrow{r}{\varphi} \arrow[swap]{d}{\psi} & N \\ M & \end{tikzcd}$ is simple $M \oplus N/\im \theta=M \oplus N$. \xqed
+\end{ex}
+
+
+\begin{ex}
+The pushout of $\begin{tikzcd} M \arrow{r}{\varphi} \arrow[swap]{d}{\psi} & N \\ 0 & \end{tikzcd}$ is simply $\coker f$. \xqed
+\end{ex}
+
+
+\begin{prop}
+Let $A$ be an abelian category. Then colimits exist (over posets) if and only if coproducts exist (over an indexed \emph{set}).
+\end{prop}
+
+\pf The forward direction is trivial as a coproduct is just a special case of a colimit, where there are no maps between objects in the system. For the reverse direction, let $I$ be a poset and $I \to A$ given by $i \mapsto M_i$ be a system in \textbf{R-mod}. By a similar proof to the existence of the pushout in \textbf{R-mod}, one can show that $\colim_{i \in I} M_i$ is 
+	\[
+	\coker \left( \bigoplus_{\varphi: i \to j} M_i \ma{\theta} \bigoplus_{i \in I} M_i \right),
+	\]
+where $\varphi: i \to j$ gives a map $M_i \to M_j$ and $\theta$ is the map constructed from the universal mapping property for the direct sum, i.e. from $M_i \to \bigoplus_{i \in I} M_i$ with maps $\varphi: i \to j$ given by $m_i \mapsto \varphi(m_i)-m_i$. In any abelian category $A$, the same proof without elements applies. Simply build $\theta$ from 
+	\[
+	M_i \ma{\theta_\varphi} \bigoplus_{i \in I} M_i,
+	\]
+where $\varphi: M_i \to M_j$ and $\theta_\varphi \defeq i_j \varphi - i_i 1$. \qed \\
+
+
+\begin{rem}
+In \textbf{R-mod}, the colimit is just the quotient of $\bigoplus_{i \in I} M_i$, identifying elements along the $\varphi_j^i$'s. 
+\end{rem}
+
+
+\begin{prop}
+The colimit (direct limit) of any direct system $\{M_i,\varphi_j^i\}$ of left $R$-modules over a partially ordered index set $I$ exists. 
+\end{prop}
+
+\pf For each $i \in I$, let $\lambda_i$ be the morphism of $M_i$ into the direct sum $\oplus_i M_i$. Define
+	\[
+	D = \left( \bigoplus_i M_i \right)/ S,
+	\]
+where $S$ is the submodule of $\oplus_i M_i$ generated by all the elements $\lambda_j \varphi^i_j m_i -\lambda_i m_i$, where $m_i \in M_i$ and $i \leq j$. Now define the insertion morphisms $\alpha_i: M_i \rightarrow D$ by 
+	\[
+	\alpha_i: m_i \mapsto \lambda_i(m_i)+S,
+	\]
+It is routine to verify that $D$ and the maps $\alpha_i$ satisfy the Universal Mapping Property so that $D \cong \dlim M_i$. \qed \\
+
+
+
+\subsection{Limits}
+
+
+
+Limits work the same as colimits except that the direction of the arrows are reversed, i.e. they are dual. Hence, the notions for limits are dual to those for colimits, i.e. epi goes to monic, quotients go to subobjects, and direct sums to to direct products. 
+
+
+\begin{dfn}[Inverse System]
+Given a partially ordered sets $I$ and a category $\mathcal{C}$, an inverse system in $\mathcal{C}$ is an ordered pair $\big((M_i)_{i \in I}, (\psi_i^j)_{j \geq i} \big)$, abbreviated $\{M_i,\psi_i^j\}$, where $(M_i)_{i \in \mathcal{I}}$ is an indexed family of objects in $\mathcal{C}$ and $(\psi_i^j: M_j \to M_i)_{j \geq i}$ is an indexed family of morphisms for which $\psi_i^j=1_{M_i}$ for all $i$, and such that the following diagram commutes for whenever $k \geq j \geq i$:
+	\[
+	\begin{tikzcd}
+	M_k \arrow{rr}{\psi_i^k} \arrow[swap]{dr}{\psi_j^k} & & M_i \\
+	& M_j \arrow[swap]{ru}{\psi_i^j} & 
+	\end{tikzcd}
+	\]
+\end{dfn}
+
+
+\begin{ex}
+In $\N$, then an inverse system is a diagram 
+	\[
+	M_0 \leftarrow M_1 \leftarrow M_2 \leftarrow \cdots
+	\]
+Note that we have again excluded identity morphisms and the composites of the arrows above. Observe also that this is just a system over $-\N$. \xqed
+\end{ex}
+
+
+\begin{ex}
+If $J$ is an ideal in a commutative ring $R$, then $J^n$ is an ideal and there is a descending sequence
+	\[
+	R \supseteq J \supseteq J^2 \supseteq J^3 \supseteq \cdots.
+	\]
+If $A$ is an $R$-module, there is a descending sequence of submodules
+	\[
+	A \supseteq JA \supseteq J^2A \supseteq J^3A \supseteq \cdots.
+	\]
+If $m \geq n$, define $\psi_n^m: A/J^mA \to A/J^nA$ by $\psi_n^m: a + J^mA \mapsto a+J^nA$. These maps are well defined for $m \geq n$ as $J^mA \subseteq J^nA$. Then $\{ A/J^n, \psi_n^m\}$ is an inverse system over $\N$. \xqed 
+\end{ex}
+
+
+\begin{dfn}[Limit]
+Let $I$ be a partially ordered sets and $\mathcal{C}$. Let $\{M_i, \psi^j_i\}$ be an inverse system in $\mathcal{C}$ over $I$. The limit (or projective limit or inverse limit), written $\lim M_i$ or $\plim M_i$, is an object $\plim M_i$ and a family of projections $(\alpha_i: \plim M_i \to M_i)_{i \in I}$ such that
+	\begin{enumerate}[(i)]
+	\item $\psi^j_i \alpha_j=\alpha_i$ whenever $i \leq j$
+	\item for all $X \in \text{obj } \mathcal{C}$ and morphisms $f_i: X \to M_i$ satisfying $\psi^j_i f_j=f_i$ for all $i \leq j$, there exists a unique morphism $\theta: X \to \plim M_i$ making the diagram commute
+		\[
+		\begin{tikzcd}
+		\plim M_i  \arrow{dr}{\alpha_i} \arrow[swap,bend right = 50]{ddr}{\alpha_j} & & X \arrow[dotted,swap]{ll}{\theta} \arrow[swap]{dl}{f_i}  \arrow[swap,bend left=50,swap]{ddl}{f_j} \\
+		& M_i  & \\
+		&  M_j   \arrow{u}{\varphi^j_i} & 
+		\end{tikzcd}
+		\]
+	\end{enumerate}
+\end{dfn}
+
+
+\begin{rem}
+The limit is really just the colimit of $F^{\text{op}}: I^{\text{op}} \to \mathcal{C}^{\text{op}}$. 
+\end{rem}
+
+
+\begin{ex} \label{ex:padic} \hfill
+	\begin{enumerate}[(i)]
+	\item For a system $\{M_i\}_{i \in I}$ with no maps between the $M_i$'s, the limit of the system (if it exists) is $\prod_{i \in I} M_i$. \xqed
+	\item In \textbf{Sets}, an inverse system of a chain of subsets of a fixed set $X$ $U_1 \supseteq U_2 \supseteq U_3 \supseteq \cdots$ over the poset $\N$ with the maps the inclusion of subsets is $L= \bigcap_{i=1}^\infty U_i$. \xqed
+	\item If $J$ is an ideal in a commutative ring $R$ and $M$ is an $R$-module, then the inverse limit of $\{M/J^nM, \psi_n^m\}$ is called the $J$-adic completion of $M$, which we shall denote $\hat{M}$. Consider
+		\[
+		(a_1+JM, a_2+J^2M, a_3+J^3M, \ldots) \in \plim(M/J^nM),
+		\]
+	called a thread, satisfies the condition $\psi_n^m(a_m+J^mM)= a_m+J^nM$ for all $m \geq n$ so that $a_m - a_n \in J^nM$ whenever $n \geq m$. We can place a metric on $M$ in the case when $\cap_{n=1}^\infty J^nM= \{0\}$: if $x \in M$ and $x \neq 0$, then there is an $i$ with $x \in J^iM$ and $x \notin J^{i+1}M$; define $\|x\|=2^{-i}$ and $\|0\|=0$. Then $d(x,y)=\|x-y\|$ is a metric on $M$. The intersection condition is to force a nonzero $x \in \cap_{n=1}^\infty J^nM$. Moreover, if a sequence $(a_n)$ in $M$ is a Cauchy sequence, then it is easy to construct an element $(b_n+JM) \in \plim M/J^nM$ that is a limit of $(\phi(a_n))$. In particular when $M=\Z$ and $J=(p)$, where $p$ is a prime, then the completion $\Z_p$ is called the ring of $p$-adic integers. It turns out that $\Z_p$ is a domain, and $\Q_p=\text{Frac}(\Z_p)$ is called the field of $p$-adic numbers. 
+	\end{enumerate} \xqed
+\end{ex}
+
+
+\begin{dfn}[Pullback]
+Given two morphisms $f: B \to A$ and $g: C \to A$ in a category $\mathcal{C}$, the pullback (or fibered sum) is a triple $(D,\alpha,\beta)$ with $g\alpha=f\beta$ that is a solution to the universal mapping property. That is, for all $(X,\alpha',\beta')$ with $g\alpha'=f\beta'$, there exists a unique morphism $\theta: X \to D$ making the diagram commute. The pullback is denoted by $B \sqcap_A C$
+	\[
+	\begin{tikzcd}
+	X \arrow[yshift=1ex]{drr}{\alpha'} \arrow[dotted,swap]{dr}{\theta} \arrow[swap,yshift= -1.5ex]{ddr}{\beta'} & & \\
+	& D \arrow{r}{\alpha} \arrow[swap]{d}{\beta} & C \arrow{d}{g} \\
+	& B \arrow[swap]{r}{f} & A
+	\end{tikzcd}
+	\]
+\end{dfn}
+
+
+\begin{ex}
+Pullbacks exists in \textbf{Groups}: they are subgroups of a direct product. \xqed
+\end{ex}
+
+
+\begin{rem}
+The kernel is a type of pullback. Specifically, if $f: B \to A$ is a morphism in \textbf{R-mod}, then the pullback formed by $A,B,$ and $f$ is $(\ker f,i)$, where $i: \ker f \to B$ is inclusion. 
+\end{rem}
+
+
+\begin{prop}
+In an abelian category, the pullback is just $\ker( A \times B \ma{(f,g)} C)$. In particular, in \textbf{R-mod}, it is the submodule of $A \times B$ $\{(a,b)\;|\; f(a)=g(b)\} \subseteq A \times B$. 
+\end{prop}
+
+
+So in some sense, limits are products with extra identifications. We encourage the reader to prove the following corollary directly. 
+
+
+\begin{prop}
+Let $\mathcal{A}$ be an abelian category. Then limits exist (over posets) if and only if products (over index sets) exist.
+\end{prop}
+
+
+\begin{cor}
+In \textbf{R-mod}, all limits exist over posets. 
+\end{cor}
+
+
+
+\subsection{Exactness of Systems}
+
+
+
+\begin{dfn}[Exactness of Systems]
+Suppose that $\{M_i\},\{N_i\}$ are systems over a poset $I$ in a category $\cC$. 
+	\begin{enumerate}[(i)]
+	\item A map from $M_i \rightarrow N_i$ is just a natural transformation of the functors $I \rightarrow \cC$ defining each. Equivalently, a map from $M_i \rightarrow N_i$ are maps such that for all $i \leq j$, the following square commutes
+		\[
+		\begin{tikzcd}
+		M_i \arrow{r} \arrow{d} & N_i \arrow{d} \\
+		M_j \arrow{r} & N_j
+		\end{tikzcd}
+		\]
+	\item A sequence $\{M_i\} \rightarrow \{N_i\} \rightarrow \{W_i\}$ is exact at $\{N_i\}$ if it is exact at each $i$.
+	\end{enumerate}
+\end{dfn}
+
+
+\begin{prop}
+In an abelian category $\cA$ (so that exactness is defined), the following hold:
+	\begin{enumerate}[(i)]
+	\item	 The direct limit, $\colim$ or $\dlim$, is right exact if it exists.
+	\item The inverse limit, $\lim$ or $\plim$, is left exact if it exists.
+	\end{enumerate}
+\end{prop}
+
+\pf We want to show that the colimit is left adjoint to some functor (so that it is right exact) and that the limit is right adjoint to some functor (so that it is left exact). We will only show that the colimit is left adjoint as the proof for the limit proceeds similarly. 
+
+Fix a poset $I$. We know that $\cA^I \rightarrow \cA$ is a functor. Define the diagonal functor $\Delta: \cA \rightarrow \cA^I$ by mapping $A$ to the constant functor with value $A$. That is, $\Delta(A)(i)=A$, a diagram/system with $A$ at each point and all the arrows are $1_A$. It is routine to verify that $(\dlim, \Delta)$ is an adjoint pair,
+	\[
+	\Hom_{\cA}(\colim(\{M_i\}),B) \cong \Hom_{\cA^I}(\{M_i\},\Delta(B)).
+	\]
+The above isomorphism follows from the universal mapping property for the colimit. \qed \\
+
+
+\begin{rem}
+One can easily remember whether the direct limit, $\dlim$, or inverse limit, $\plim$, is right/left exact by the direction of their arrows.
+\end{rem}
+
+
+We now investigate the behavior of $\dlim$ and $\plim$ with respect to tensoring and hom-ming. 
+
+
+\begin{prop}
+Let $W \in \textbf{R-mod}$, then
+	\begin{enumerate}[(i)]
+	\item $- \otimes_R W$ preserves the colimit, $\dlim$
+	\item $\Hom_R(W,-)$ preserves limits, $\plim$
+	\item $\Hom_R(-,W)$ converts colimits to limits. 
+	\end{enumerate}
+\end{prop}
+
+\pf We shall only prove the first, leaving the others as an exercise. We know that $- \otimes_R W$ preserves coproducts
+	\[
+	\left(\bigoplus_i M_i \right) \otimes_R W \ma{\sim} \bigoplus \;(M_i \otimes_R W).
+	\]
+[Note that in general, $\prod M_i \otimes W \not\cong \prod (M_i \otimes W)$.] We know also that $S^{-1}M=M \otimes_A S^{-1}A$. Furthermore, $-\otimes_R W$ preserves cokernels:
+	\[
+	\coker( (M \ma{f} N) \otimes W) = \coker (M \ma{f} N) \otimes W
+	\]
+To see this, take the exact sequence
+	\[
+	M \ma{f} N \ma{} \coker \ma{} 0.
+	\]
+Now as the tensor product is right exact and $\coker \otimes_R W$ is $\coker(M \otimes_R W \ma{f \otimes 1_W} N \otimes_R W)$, the following sequence is exact
+	\[
+	M \otimes_R W \ma{} N \otimes_R W \ma{} \coker \otimes_R W \ma{} 0.
+	\]
+So $-\otimes_R W$ preserves $\colim$ by the proof of the previous result. We know that $-\otimes_R W$ preserves the colimit
+	\[
+	\colim \{M_i\} \otimes_R W \cong \colim \{M_i\} \otimes_R W.
+	\]
+The proof of the other two are similar. [We know that $\Hom_R(W,\prod M_i) \cong \prod \Hom_R(W,M_i)$ using the Universal Mapping Properties for the Product. Furthermore, we show $\Hom(\oplus M_i,W) \cong \prod \Hom(M_i,W)$ using the Universal Mapping Property for the Direct Sum. Use the fact that $\Hom$ is left exact.] \qed \\
+
+
+Note that a stronger result holds: if $(F,G)$ is an adjoint pair then $F$ preserves colimits and $G$ preserves limits. Note also that adjoints are unique. 
+
+
+
+\subsection{Directed \& Filtered Limits}
+
+
+
+\begin{dfn}[Directed Set]
+A directed set is a partially ordered set $I$ such that for every $i,j \in I$, there is $k \in I$ with $i \leq k$ and $j \leq k$. That is, viewing the poset $I$ as a graph, for every $i,j \in I$, there is a $k \in I$ so that there is a path from both $i$ and $j$ to $k$. 
+\end{dfn}
+
+
+\begin{ex}
+The following system is not directed
+	\[
+	\begin{tikzcd}
+	& & \cdot \\
+	\cdot \arrow{urr} \arrow{drr} & & \\
+	& & \cdot 
+	\end{tikzcd}
+	\]
+However, the following system is directed
+	\[
+	\begin{tikzcd}
+	& \cdot \arrow{dr} &  \\
+	\cdot \arrow{ur} \arrow{dr} & & \cdot \\
+	& \cdot \arrow{ur} &  
+	\end{tikzcd}
+	\]
+Notice that for a finite poset, we could draw the diagram so that there is a `topmost' point if the system is a directed system. \xqed
+\end{ex}
+
+
+\begin{ex}
+Another very common directed system is the poset
+	\[
+	\cdot \ma{} \cdot \ma{} \cdot \ma{} \cdots \cdots 
+	\]
+More generally, a category $I$ is called filtered if 
+	\begin{itemize}
+	\item $I$ is not empty
+	\item directed: for every $A,B \in I$, there exists $C \in I$ and morphisms $f: A \to C$ and $g: B \to C$. 
+	\item for every pair of parallel morphisms $f,g: A \to B$ in $I$, there exists $C \in I$ and morphism $h: B \to C$ such that $hf=hg$. 
+	\end{itemize}
+	\[
+	\begin{tikzcd}
+	 A \arrow[yshift= 0.5ex]{r}{f} \arrow[yshift= -0.5ex,swap]{r}{g}  & B \arrow{r}{h} & C 
+	 \end{tikzcd}
+	\] \xqed
+\end{ex}
+
+
+We now examine colimits over directed sets since these limits have `nice' properties. Note that colimits over a directed set are also referred to as
+	\begin{2enumerate}
+	\item colimit over a filtered set
+	\item directed limit
+	\item directed colimit
+	\item filtered limit
+	\item filtered colimit
+	\item direct limit
+	\end{2enumerate}
+	
+
+\begin{lem}
+Let $\{M_i\}$ be a directed system in $R$-mod. Then
+	\begin{enumerate}[(i)]
+	\item Every $m \in \dlim M_i$ comes from some $M_i$; that is, $m=\iota_i(m_i)$ for some $m_i \in M_i$.
+	\item For all $i$, $\ker(M_i \to \dlim M_i)= \bigcup_{j \geq i} \ker(M_i \to M_j)$.
+	\end{enumerate}
+\end{lem}
+
+
+\begin{cor}
+	\[
+	\dlim M_i = \bigsqcup_i \; M_i /\sim 
+	\]
+where $m_i \sim m_j$; that is, $m_i-m_j \sim 0$ if $\varphi_l^i(m_i)=\varphi_l^j(m_j)$ for some $i,j \leq l$. 
+\end{cor}
+
+
+\begin{thm}
+Directed limits (filtered limits) are exact in $R$-mod. 
+\end{thm}
+
+\pf Suppose
+	\[
+	0 \ma{} \{M_i\} \ma{f_i} \{N_i\} \ma{} \{L_i\} \ma{} 0
+	\]
+is a short exact sequence. We know that $\dlim$ is right exact so we need only show exactness on the left. This is equivalent to showing that the $\{f_i\}$ are injective. Suppose $\tilde{f}(m)=0$. Then by the lemma, $m=\iota_i(m_i)$ for some $m_i \in M_i$. Then $\iota_i(f_i(m_i))=0$ in $\dlim N_i$. By the lemma, there is $i \to j$ such that $\varphi_j^i(f(m_i))=0$. But $f(\varphi_j^i(m_i))=\varphi_j^i(f(m_i))$. However, $f$ is monic so that $\varphi_j^i(m_i)=0$. Then by the lemma, $m=\iota_i(m_i)=0$. \qed \\
+	\[
+	\begin{tikzcd}
+	M_i \arrow{r} \arrow{d}{f_i} & \dlim M_i \arrow{d}{\tilde{f}} \\
+	N_i \arrow{r} & \dlim N_i
+	\end{tikzcd}
+	\] \qed \\
+
+
+\begin{cor}
+In $R$-mod, a directed limit commutes with homology:
+	\[
+	H_n(\dlim M_i) = \dlim H_n(M_i)
+	\]
+\end{cor}
+
+\pf $\dlim$ is an exact functor. \qed \\
+
+
+\begin{ex} \hfill
+	\begin{enumerate}[(i)]
+	\item If $f \in R$, then $R_f=\dlim(R \ma{f} R \ma{f} \cdots)$
+	\item The $p$-adic numbers, see Example~\ref{ex:padic}. 
+	\item Let $X$ be a space. Let $I$ be a poset of open subsets of $X$ ordered by reverse inclusion; that is, $U \subseteq V$ then $V \to U$, where $U,V$ are open. If we have a (contravariant) functor from $X$ to a ring, then this is called the sheaf of rings, $\mathcal{O}_X$ (the structure sheaf), on $X$. 
+	
+	For each $U$, let $\Gamma(U)=\Gamma(U,\mathcal{O}_X)$ be the continuous functions $U \ma{f} \mathbb{C}$. Of course, we could have chosen polynomials or holomorphic functions instead of continuous functions. The smaller the set, the easier this is to write explicitly. 
+	\end{enumerate} \xqed
+\end{ex}
+
+
+
+\subsection{Flatness \& Limits}
+
+
+
+First, we recall a definition. 
+
+\begin{dfn}[Flat Module]
+A left $R$-module $M$ is flat if the functor $- \otimes_R M$ is exact. Equivalently, $R$ is flat whenever $i: A \to B$ is an injection, $i \otimes 1_M: A \otimes_R M \to B \otimes_R M$ is injective. 
+\end{dfn}
+
+
+\begin{ex} \hfill
+	\begin{enumerate}[(i)]
+	\item If $M$ is free, then it is also projective and therefore flat (see the proposition below).
+	\item $\Z/n\Z$ is not flat for $n \geq 2$. as $n: \Z \to \Z$, given by $x \mapsto nx$ is injective, but tensoring with $\Z/n\Z$, the map is not injective. 
+	\item $\Q/\Z$ is not flat over $\Z$ as $\iota: \Z \to \Q$ is injective but $\Q/\Z \otimes_\Z \Z \cong \Q/\Z$ while $\Q/\Z \otimes_\Z \Q=0$, so that the tensor map cannot be injective. 
+	\end{enumerate} \xqed
+\end{ex}
+
+
+\begin{ex}
+The localization $S^{-1}R$ is flat as an $R$-module. To see this, given an exact sequence
+	\[
+	0 \ma{} M \ma{} N \ma{} L \ma{} 0.
+	\]
+Then we need show the following sequence is exact.
+	\[
+	0 \ma{} M \otimes_R S^{-1}R \ma{} N \otimes_R S^{-1}R \ma{} L \otimes_R S^{-1}R \ma{} 0.
+	\]
+But this is precisely the exact sequence
+	\[
+	0 \ma{} S^{-1}M \ma{} S^{-1}N \ma{} S^{-1}L \ma{} 0,
+	\]
+which we know to be exact as localization is an exact functor. Taking $S=\{0\}$, this shows that $\Q$ is a flat $\Z$-module. \xqed
+\end{ex}
+
+
+\begin{prop}
+We know that we have the following implications:
+	\[
+	\text{ Free Modules } \ma{} \text{ Projective Modules } \ma{} \text{ Flat Modules }
+	\]
+The converse holds in some cases: finitely generated modules over commutative local rings
+\end{prop}
+
+
+If $M$ is a right $R$-module, then $\Hom_\Z(M,\Q/\Z)$ is a left $R$-module as follows: for $r \in R$ and $f: M \to \Q/\Z$, we define $rf$ by $m \mapsto f(mr)$. 
+
+
+\begin{dfn}[Character Module]
+If $M$ is a right $R$-module, its character module $M^*$ is the left $R$-module $M^*:= \Hom_\Z(M,\Q/\Z)$. 
+\end{dfn}
+
+
+\begin{lem}
+A sequence of right $R$-modules $A \ma{f} B \ma{g} C$ is exact if and only if the sequence of character modules 
+	\[
+	C^* \ma{g^*} B^* \ma{f^*} A^*
+	\]
+is exact. 
+\end{lem}
+
+\pf If the sequence is exact, then as $\Q/\Z$ is an injective $\Z$-module, the functor $\Hom_\Z(-,\Q/\Z)$ is exact. But then the character sequence is exact. Now assume that the character sequence is exact. If $a \in A$ and $f(a) \notin \ker g$, then $gf(a) \neq 0$. There is then a map $\phi: C \to \Q/\Z$ with $\phi gf(a) \neq 0$. But then $\phi^* \in C^*$ and $\phi gf \neq 0$, contradicting the fact that $f^*g^*=0$. 
+
+Now if $b \in \ker g$ and $b \notin \im f$, then $b+\im f \in B/\im f$ is nonzero. Therefore, there is a map $\psi: B/\im f \to \Q/\Z$ with $\psi(b+\im f) \neq 0$. If $\pi: B \to B/\im f$ is the canonical projection, define $\psi' := \psi \pi \in B^*$. As $\psi'(b)=\psi\pi(b)=\psi(b+\im f)$, we know $\psi'(b) \neq 0$. Now $\psi;(\im f)=\{0\}$ so that $0=\psi'f=f^*(\psi')$ and $\psi' \in \ker f^*=\im g^*$. But then $\psi'= g^*(h)$ for some $h \in C^*$, i.e. $\psi'=hg$. This implies $\psi'(b)=hg(b)$, a contradiction as $\psi'(b) \neq 0$, $hg(b)=0$, and $b \in \ker g$. \qed \\
+
+
+\begin{rem}
+In the preceding lemma, often the most important cases are where $A=\{0\}$ or $C=\{0\}$. 
+\end{rem}
+
+
+\begin{prop}[Lambek]
+A right $R$-module $M$ is flat if and only if its character module $M^*$ is an injective left $R$-module.
+\end{prop}
+
+\pf The functors $\Hom_R(-,\Hom_\Z(M,\Q/\Z))=\Hom_R(-,M^*)$ and $\Hom_\Z(-,\Q/\Z) \circ (M \otimes_R -)$ are canonically isomorphic. If $M$ is flat, then each of the functors is exact (noting $\Q/\Z$ is injective as a $\Z$-module). But then $\Hom_R(-,M^*)$ is exact and $M^*$ is injective. 
+
+Now assume that $M^*$ is injective as a left $R$-module and $N' \to N$ is an injection between left $R$-modules $N',N$. Since $\Hom_R(N,M^*)=\Hom_R(N,\Hom_\Z(M,\Q/\Z))$, we have a commutative diagram with exact rows and vertical maps isomorphisms
+	\[
+	\begin{tikzcd}
+	\Hom_R(N,M^*) \arrow{d} \arrow{r} & \Hom_R(N',M^*) \arrow{d} \arrow{r} & 0 \\
+	\Hom_\Z(M \otimes_R N, \Q/\Z) \arrow{d}{\rotatebox[origin=c]{90}{$\sim$}} \arrow{r} & \Hom_\Z(M \otimes N', \Q/\Z) \arrow{d}{\rotatebox[origin=c]{90}{$\sim$}} \arrow{r} & 0 \\
+	(M \otimes_R N)^* \arrow{r} & (M \otimes_R N')^* \arrow{r} & 0 
+	\end{tikzcd}
+	\]
+The exactness of the top row gives the exactness of the bottom row. But then $0 \ma{} M \otimes_R N' \ma{} M \otimes_R N$ is exact. Therefore, $M$ is flat. \qed \\
+
+
+Finally, flat modules behave nicely with direct limits. 
+
+
+\begin{prop}
+If $\{M_i, \phi^i_j \}_{i \in I}$ is a directed system of $R$-modules and if each $M_i$ is flat, then $\dlim M_i$ is flat. 
+\end{prop}
+
+\pf Suppose $0 \ma{} A \ma{k} B$ is an exact sequence of left $R$-modules. As each $M_i$ is flat, the sequence
+	\[
+	0 \ma{} M_i \otimes_R A \ma{1_{M_i} \otimes\, k} M_i \otimes_R B
+	\]
+is exact for all $i$. Consider the commutative diagram
+	\[
+	\begin{tikzcd}
+	0 \arrow{r} & \dlim (M_i \otimes A) \arrow{d}{\phi} \arrow{r}{\vec{k}} & \dlim (M_i \otimes B) \arrow{d}{\psi} \\
+	0 \arrow{r} & (\dlim M_i) \otimes A \arrow{r}{1 \otimes\, k} & (\dlim M_i) \otimes B
+	\end{tikzcd}
+	\]
+where the vertical maps $\phi,\psi$ are isomorphisms and the map $\vec{k}$ is induced from the morphism of direct systems $\{1_{M_i} \otimes k\}$ and 1 is the identity map on $\dlim M_i$. Since each $M_i$ is flat, the index set $I$ is directed, and the top row is exact, the maps $1_{M_i} \otimes k$ are injective. But then $1 \otimes k: (\dlim M_i) \otimes A \to (\dlim M_i) \otimes B$ is an injection (being the composition of injections $\psi\vec{k}\phi^{-1}$. Therefore, $\dlim M_i$ is flat. \qed \\
+
+
+\noindent In fact, flat modules arise from direct limits over directed sets, as the theorem of Lazard shows. 
+
+
+\begin{thm}[Lazard]
+If $M$ is a left $R$-module, then $M$ is flat if and only if $M$ is a directed limit of finitely generated free $R$-modules.
+\end{thm}

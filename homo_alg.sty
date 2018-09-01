@@ -1,0 +1,133 @@
+% !TEX root = homo_alg.tex
+
+
+% Operators, Functions, and the Like
+
+\DeclareMathOperator{\gal}{Gal}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\trace}{tr}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\nil}{Nil}
+\DeclareMathOperator{\soc}{soc}
+\DeclareMathOperator{\tor}{tor}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\ch}{char}
+\DeclareMathOperator{\tr}{trace}
+\DeclareMathOperator{\ann}{Ann}
+\DeclareMathOperator{\inn}{Inn}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\sheaf}{Sh}
+\DeclareMathOperator{\symm}{Sym}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\obj}{obj}
+\DeclareMathOperator{\colim}{colim}
+\DeclareMathOperator{\tot}{Tot}
+\DeclareMathOperator{\cyl}{Cyl}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\chh}{Ch}
+
+% Special Symbols
+  
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\bk}{\mathbbm{k}}
+\newcommand{\ob}{\text{obj}}
+
+
+% Special Characters/Commands and Shortcuts
+
+\def\rddots{\cdot^{\cdot^{\cdot^{}}}}
+\newcommand{\ep}{\epsilon}
+\newcommand{\ov}[1]{\overline{#1}}
+\newcommand{\syl}[2]{\text{Syl}_{#1}(#2)}
+\newcommand*{\defeq}{\stackrel{\text{def}}{=}}
+\newcommand{\ma}[1]{\stackrel{#1}{\longrightarrow}}
+\newcommand{\hra}{\lhook\joinrel\longrightarrow}
+\newcommand{\la}{\longrightarrow}
+\newcommand{\hard}[1]{$\star$ #1 $\star$}
+\newcommand{\smat}[4]{\left(\begin{smallmatrix} #1 & #2 \\ #3 & #4 \end{smallmatrix} \right)}
+\newcommand{\et}[1]{{#1}_\textnormal{\'et}} % etale site
+\newcommand{\plim}{\varprojlim}
+\newcommand{\dlim}{\varinjlim}
+\newcommand*{\tcdot}{} % Check if undefined
+\DeclareRobustCommand*{\tcdot}{%
+  \mathbin{\mathpalette\tcdot@{}}%
+}
+\newcommand*{\tcdot@scalefactor}{.5}
+\newcommand*{\tcdot@widthfactor}{1.15}
+\newcommand*{\tcdot@}[2]{%
+  % #1: math style
+  % #2: unused
+  \sbox0{$#1\vcenter{}$}% math axis
+  \sbox2{$#1\cdot\m@th$}%
+  \hbox to \tcdot@widthfactor\wd2{%
+    \hfil
+    \raise\ht0\hbox{%
+      \scalebox{\tcdot@scalefactor}{%
+        \lower\ht0\hbox{$#1\bullet\m@th$}%
+      }%
+    }%
+    \hfil
+  }%
+}
+\newcommand{\dt}[1]{#1_{\,\tcdot}}
+\newcommand{\ddt}[1]{#1_{\,\tcdot\tcdot}}
+\newcommand{\udt}[1]{#1^{\,\tcdot}}
+\newcommand{\dsim}{\rotatebox[origin=c]{90}{\sim}}
+\newcommand{\xqed}{\hfill \lower-0.3ex\hbox{$\triangleleft$}}
+\newcommand{\pf}{\noindent\emph{Proof. }}
+\newcommand{\mdots}{\rotatebox[origin=c]{90}{$\cdots\cdots$}}
+\newenvironment{2enumerate}{%
+\begin{enumerate}[(i)]
+\begin{multicols}{2}
+}{%
+\end{multicols}
+\end{enumerate}
+}
+
+
+
+
+% Tate-Shafarevich groups
+%  \DeclareFontFamily{U}{wncy}{}
+%  \DeclareFontShape{U}{wncy}{m}{n}{<->wncyr10}{}
+%  \DeclareSymbolFont{mcy}{U}{wncy}{m}{n}
+%  \DeclareMathSymbol{\sha}{\mathord}{mcy}{"58}  
+
+
+% Theorems, Definitions, etc.
+\numberwithin{equation}{section}
+
+\theoremstyle{theorem}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{cor}{Corollary}[section]
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}[section]
+\newtheorem{nex}{Non-Example}[section]
+\newtheorem*{dfn}{Definition}
+\newtheorem*{conject}{Conjecture}
+
+%\theoemstyle{remark}
+\newtheorem*{rem}{Remark} 
+
+\declaretheorem[sibling=subsubsection, qed={\lower-0.3ex\hbox{$\triangleright$}}]{example}
